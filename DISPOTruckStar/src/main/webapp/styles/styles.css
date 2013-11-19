@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+#grundZustandSeitenId
+{
+    background: url(../images/dispo.JPG) no-repeat;
+    background-size: 100% 87%;
+}
+
+#grundZustandHeader
+{
+    text-align: center;
+}
+
+#callNumber
+{
+    text-align: center;
+}
+
+#seriennummer
+{
+    height:10px;
+    width:150px
+}

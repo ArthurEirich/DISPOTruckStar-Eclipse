@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="de-DE" manifest="DISPOTruckStar.appcache">
+	<head>
+        <title>DISPO Truck Star</title>
+        <meta http-equiv="CONTENT-TYPE" content="text/html" charset="UTF-8">
+        <link rel="stylesheet" href="jquery.mobile-1.3.2.css"/>
+
+        <script src="jquery-1.9.1.min.js"></script>
+        <script src="jquery.mobile-1.3.2.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+        <!-- weitere Scripts -->
+        <script src="scripts/functions.js"></script>
+        <script src="scripts/fillLocalStorage.js"></script>
+
+        <!-- weitere Styles -->
+        <link rel="stylesheet" href="styles/styles.css"/>
+
+        <!-- Einstellungen zur Definition als WebApp -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    </head>
+
+    <body id="documentBody" onload="fillLocalStorage()">
+        <div data-role="page" id="grundZustandSeitenId">
+        
+            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="b">
+                Sie befinden sich derzeit im Grundzustand
+            </div>
+            
+            <div data-role="content">
+                <a href="#startscreen" rel="external" data-role="button" id="DISPOTruckStar" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">DISPO Truck Star</a>
+                <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="loadLastConfig()" data-theme="e" data-icon="gear" data-iconpos="right" data-inline="">Letzte Konfiguration</a>
+                <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="resetConfig()" data-theme="e" data-icon="gear" data-iconpos="right">Werkeinstellungen</a>
+            </div>
+            
+            <div data-role="footer" data-position="fixed" data-theme="c">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="plus" data-theme="e">Zoom</a></li>
+                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="gear"data-theme="e">Tools</a></li>
+                        <li><a href="#helpPageId" rel="external" data-role="button" data-icon="alert" data-theme="e">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div data-role="page" id="startscreen">
+
+            <div data-role="header" data-theme="b">
+                DISPO   [ C:DisConnected,EventReset, M:x, R:<span id="indicator">(state unknown)</span>, G:<span id="GPSIndicator">(state unknown)</span> ]
+            </div>
+
+            <div data-role="content">
+                <div>
+                    <b>Fahrzeugnummer:    <span id="vehicleNumber">wird aus der DB ausgelesen</span></b>
+                </div>
+
+                <div>
+                    <b>Funk:      <span id="indicatorFunk">(state unknown)</span></b>
+                </div>
+
+                <div>
+                    <b>Anzahl offener Touren:  <span id="anzahlTouren">(wird aus der DB ausgelesen)</span></b>
+                </div>
+
+                <div>
+                    <b>Version:    <span id="nightlyVersion">(kommt aus local storage)</span></b>
+                </div>
+
+                <div>
+                    <b>Datum:
+                        <script type="text/javascript">
+                            var today = new Date();
+                            var dd = today.getDate();
+                            var mm = today.getMonth()+1; //January is 0!
+
+                            var yyyy = today.getFullYear();
+                            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'-'+mm+'-'+yyyy;
+                            document.write(today.toString());
+                        </script>
+                    </b>
+                </div>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-theme="c">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="delete" data-theme="e">Beenden</a></li>
+                        <li><a href="#meldungenPage" rel="external" data-role="button" data-icon="info" data-theme="e" data-rel="dialog" data-transition="pop" >Meldungen</a></li>
+                        <li><a href="#servicePage" rel="external" data-role="button" data-icon="gear" data-theme="e">Service</a></li>
+                        <li><a href="#anmeldeBildschirm" rel="external" data-role="button" onclick="updateAnmeldeBildschirm()" data-icon="arrow-r" data-theme="e">Weiter zur Fahreranmeldung</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div data-role="page" id="helpPageId">
+        
+            <div data-role="header" data-theme="e">
+                <h1>Help</h1>
+            </div>
+            
+            <div data-role="content">
+                Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:
+                <h1 id="callNumber">+49(0) 931 / 32235-0</h1>
+                <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur Hauptseite</a>
+            </div>
+        </div>
+        
+        <div data-role="page" id="meldungenPage">
+        
+	        <div data-role="header" data-theme="e">
+	            <h1>Meldungen</h1>
+	        </div>
+	        
+	        <div data-role="content">
+	            Hier erscheinen später die Anmerkungen zu der jeweiligen Tour
+	            <a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur DISPO Truck Star</a>
+	        </div>
+    	</div>
+    	
+    	<div data-role="page" id="servicePage">
+    	
+    		<div data-role="header" data-theme="e">
+	            <h1>Service</h1>
+	        </div>
+	        
+	        <div data-role="content">
+				Wir bieten ausgezeichneten Service und Support!!!
+				<a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur DISPO Truck Star</a>
+			</div>
+        </div>
+        
+       	<div data-role="page" id="anmeldeBildschirm">
+
+            <div data-role="header" data-theme="b">
+                DISPO   [ C:DisConnected,EventReset, M:x, R:<span id="indicator">(state unknown)</span>, G:<span id="GPSIndicator">(state unknown)</span> ]
+            </div>
+
+            <div data-role="content">
+
+                <div data-role="fieldcontain">
+                    <h3><label for="FahrerAuswahl" class="select">Fahrer:</label></h3>
+                    <select name="FahrerAuswahl" id="FahrerAuswahl">
+                    
+						<!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
+						
+                    </select>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <h3><label for="password">PIN:</label></h3>
+                    <input type="password" name="password" id="password" value="" data-clear-btn="true"/>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <h3><label for="AufliegerAuswahl" class="select">Auflieger:</label></h3>
+                    <select name="AufliegerAuswahl" id="AufliegerAuswahl">
+                    
+                    	<!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
+                    	
+                    </select>
+                </div>
+
+	            <div data-role="footer" data-position="fixed" data-theme="e">
+	                <div data-role="navbar">
+	                    <ul>
+	                        <li><a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zum DISPO Truck Star</a></li>
+	                        <li><a href="#changePass" rel="external" data-role="button" data-icon="refresh" data-theme="e">PIN ändern</a></li>
+	                        <li><a href="#Touren" rel="external" data-role="button" data-icon="arrow-r" data-theme="e">Bestätigung und weiter zu den Touren</a></li>
+	                    </ul>
+	                </div>
+	            </div>
+            </div>
+            
+		</div>
+            
+		<div data-role="page" id="changePass">
+
+            <div data-role="header" data-theme="e">
+                <h1>Passwort ändern</h1>
+            </div>
+
+            <div data-role="content">
+
+                <div data-role="fieldcontain">
+                    <label for="oldPassword">Altes Passwort:</label>
+                    <input type="password" name="oldPassword" id="oldPassword" value=""  />
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="newPassword">Neues Passwort:</label>
+                    <input type="password" name="newPassword" id="newPassword" value=""  />
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="confirmNewPassword">Neues Passwort:</label>
+                    <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
+                </div>
+
+                <a href="#anmeldeBildschirm" rel="external" data-role="button" data-theme="e" data-inline="true" data-icon="delete">Abbrechen</a>
+                <a href="#anmeldeBildschirm" rel="external" data-role="button" id="changePassword" onclick="changePassword()" data-inline="true"
+                                data-theme="c" data-icon="check" data-iconpos="right">Passwort ändern</a>
+            </div>
+
+		</div>
+		
+		<div data-role="page" id="Touren">
+		
+			<div data-role="header" data-position="fixed" id="TourenHeader" data-theme="b">
+				Touren für heute
+			</div>
+			
+			<div data-role="content" id="TourenPageContent">
+					<a href="#Tour1Page" rel="external" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
+					<a href="#Tour2Page" rel="external" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
+			</div>
+			
+			<div data-role="footer" data-position="fixed" data-theme="e">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#anmeldeBildschirm" rel="external" data-role="button" onclick="updateAnmeldebildschirm()" data-icon="back" data-theme="e" >Zurück zur Anmeldung</a></li>
+                        <li><a href="#" rel="external" data-role="button" data-icon="alert" data-theme="e">Notiz</a></li>
+                    </ul>
+                </div>
+            </div>
+            	
+		</div>
+		
+		<div data-role="page" id="Tour1Page">
+		
+			<div data-role="header" data-position="fixed" data-theme="b">
+				Tour 1
+			</div>
+			
+			<div data-role="content" id="Tour1PageContent"></div>
+			
+			<div data-role="footer" data-position="fixed" data-theme="e">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zu den Touren</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+		</div>
+		
+		<div data-role="page" id="Tour2Page">
+		
+			<div data-role="header" data-position="fixed" data-theme="b">
+				Tour 2
+			</div>
+			
+			<div data-role="content" id="Tour2PageContent"></div>
+			
+			<div data-role="footer" data-position="fixed" data-theme="e">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zu den Touren</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+		</div>
+		
+		<div data-role="page" id="ProduktErfassungPage">
+		
+			<div data-role="header" data-position="fixed" data-theme="b">
+				Produkterfassung
+			</div>
+			
+			<div data-role="content" id="ProduktTyp">
+			
+				<div data-role="fieldcontain">
+		            <label for="Liter15Grad">Liter 15°C:</label>
+		            <input type="text" name="Liter15Grad" id="Liter15Grad" value="" placeholder="Liter 15°C"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Dichte">Dichte:</label>
+		            <input type="text" name="Dichte" id="Dichte" value="" placeholder="Dichte"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Nr.">Nr.:</label>
+		            <input type="text" name="Nr." id="Nr." value="" placeholder="Nummer des Ladenscheins"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Liter">Liter:</label>
+		            <input type="text" name="Liter" id="Liter" value="" placeholder="Liter"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Kilo">Kilo:</label>
+		            <input type="text" name="Kilo" id="Kilo" value="" placeholder="Kilo"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Beginn">Beginn am:</label>
+		            <input type="datetime-local" name="Beginn" id="Beginn" value="" placeholder="Uhrzeit"/>
+	            </div>
+	            
+	            
+	            
+			</div>
+			
+		</div>
+
+    </body>
+</html>
