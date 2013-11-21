@@ -272,40 +272,54 @@
 				Produkterfassung
 			</div>
 			
-			<div data-role="content" id="ProduktTyp">
+			<div data-role="content">
+			
+				<div>Produkt:<b><span id="ProduktTyp">unknown</span></b></div>
 			
 				<div data-role="fieldcontain">
 		            <label for="Liter15Grad">Liter 15°C:</label>
-		            <input type="text" name="Liter15Grad" id="Liter15Grad" value="" placeholder="Liter 15°C"/>
+		            <input type="text" name="Liter15Grad" id="Liter15Grad" value="" placeholder="Liter 15°C" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Dichte">Dichte:</label>
-		            <input type="text" name="Dichte" id="Dichte" value="" placeholder="Dichte"/>
+		            <input type="text" name="Dichte" id="Dichte" value="" placeholder="Dichte" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
-		            <label for="Nr.">Nr.:</label>
-		            <input type="text" name="Nr." id="Nr." value="" placeholder="Nummer des Ladenscheins"/>
+		            <label for="Nr">Nr.:</label>
+		            <input type="text" name="Nr" id="Nr" value="" placeholder="Nummer des Ladenscheins" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Liter">Liter:</label>
-		            <input type="text" name="Liter" id="Liter" value="" placeholder="Liter"/>
+		            <input type="text" name="Liter" id="Liter" value="" placeholder="Liter" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Kilo">Kilo:</label>
-		            <input type="text" name="Kilo" id="Kilo" value="" placeholder="Kilo"/>
+		            <input type="text" name="Kilo" id="Kilo" value="" placeholder="Kilo" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
-		            <label for="Beginn">Beginn am:</label>
-		            <input type="datetime-local" name="Beginn" id="Beginn" value="" placeholder="Uhrzeit"/>
+		            <label for="Beginn">Beginn:</label>
+		            <input type="datetime-local" name="Beginn" id="Beginn" value="" placeholder="Uhrzeit" data-clear-btn="true"/>
 	            </div>
 	            
+	            <div data-role="fieldcontain">
+		            <label for="Ende">Ende:</label>
+		            <input type="datetime-local" name="Ende" id="Ende" value="" placeholder="Uhrzeit" data-clear-btn="true"/>
+	            </div>
 	            
-	            
+			</div>
+			
+			<div data-role="footer" data-position="fixed" data-theme="e">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#Touren" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>
+						<li><a href="#Touren" rel="external" data-role="button" onclick="erfasseProdukt()" data-icon="check" data-theme="e">Bestätigung</a></li>
+					</ul>
+				</div>
 			</div>
 			
 		</div>

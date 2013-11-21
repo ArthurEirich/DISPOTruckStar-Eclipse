@@ -145,7 +145,7 @@ function updateAnmeldeBildschirm()
 function setTourContent(tourID)
 {
 	var tankLagerNameTour1 = "BURGHAUSEN";
-	var tankLagerNameTour2 = "AGIP FÜRNI";
+	var tankLagerNameTour2 = "AGIP FГњRNI";
 	var tour1Content = document.getElementById('Tour1PageContent').innerHTML;
 	var tour2Content = document.getElementById('Tour2PageContent').innerHTML;
 	var touren = getTouren();
@@ -177,15 +177,10 @@ function setTourContent(tourID)
 			for(var y=0; y<JSONArrayLoadOrder.length; y++)
 			{
 				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
-				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] == 4771 && (!tour1Content || tour1Content == ""))
+				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == ""))
 				{
-					$('#Tour1Produkte').append('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" data-theme="e" data-icon="forward" data-iconpos="right"><b>'+innerJSONObjectLoadOrder[text]+'</b></a>');
-					$('#Tour1Produkte').trigger('create');
-					$('#'+innerJSONObjectLoadOrder[text]).on('click', function()
-					{
-						var produktTypAusJSONObj = innerJSONObjectLoadOrder[text].split(',');
-						document.getElementById('ProduktTyp').innerHTML=produktTypAusJSONObj;
-					});
+					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this)" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					$('#Tour1Produkte').append(button).trigger('create');
 				}
 			}
 		}
@@ -193,6 +188,7 @@ function setTourContent(tourID)
 	
 	if(tourID == 2)
 	{
+		var string = null;
 		for(var i=0; i<JSONArrayDepot.length; i++)
 		{
 			var innerJSONObjectDepot = JSONArrayDepot[i];
@@ -208,19 +204,21 @@ function setTourContent(tourID)
 			for(var y=0; y<JSONArrayLoadOrder.length; y++)
 			{
 				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
-				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] == 4776 && (!tour2Content || tour2Content == ""))
+				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
 				{
-					$('#Tour2Produkte').append('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" data-theme="e" data-icon="forward" data-iconpos="right"><b>'+innerJSONObjectLoadOrder[text]+'</b></a>');
-					$('#Tour2Produkte').trigger('create');
-					$('#'+innerJSONObjectLoadOrder[text]).on('click', function()
-					{
-						var produktTypAusJSONObj = innerJSONObjectLoadOrder[text].split(',');
-						document.getElementById('ProduktTyp').innerHTML=produktTypAusJSONObj;
-					});
+					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this)" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					$('#Tour2Produkte').append(button).trigger('create');
 				}
 			}
 		}
 	}
+}
+
+function passParameter(wert)
+{
+	var string = document.getElementById(wert.id).innerHTML;
+	var produktTypAusJSONObj = string.slice(0,string.indexOf(','));
+	document.getElementById('ProduktTyp').innerHTML=produktTypAusJSONObj;
 }
 
 
@@ -235,6 +233,21 @@ function setTourContent(tourID)
 	  });
 });*/
 
+function erfasseProdukt()
+{
+	var liter15 = $('#Liter15Grad').val();
+	var dichte = $('#Dichte').val();
+	var Nr = $('#Nr').val();
+	var Liter = $('#Liter').val();
+	var Kilo = $('#Kilo').val();
+	var Beginn = $('#Beginn').val();
+	var Ende = $('#Ende').val();
+	
+	var erfassteProdukteArray = [];
+	var JSONObject = {"Liter 15°C":liter15}, {"Dichte":dichte}, {"Nr.":Nr}, {"Liter":Liter}, {"Kilo":Kilo}, {"Beginn":Beginn}, {"Ende":Ende};
+	erfassteProdukteArray.push(JSONObject);
+	localStorage.setItem("Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+}
 
 $(document).bind('pagechange', function() 
 {
