@@ -179,7 +179,7 @@ function setTourContent(tourID)
 				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
 				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == ""))
 				{
-					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this)" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
 					$('#Tour1Produkte').append(button).trigger('create');
 				}
 			}
@@ -188,7 +188,6 @@ function setTourContent(tourID)
 	
 	if(tourID == 2)
 	{
-		var string = null;
 		for(var i=0; i<JSONArrayDepot.length; i++)
 		{
 			var innerJSONObjectDepot = JSONArrayDepot[i];
@@ -206,19 +205,63 @@ function setTourContent(tourID)
 				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
 				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
 				{
-					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this)" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
-					$('#Tour2Produkte').append(button).trigger('create');
+					var produktTypButton = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					$('#Tour2Produkte').append(produktTypButton).trigger('create');
 				}
 			}
 		}
 	}
 }
 
-function passParameter(wert)
+function passParameter(wert, tourID)
 {
 	var string = document.getElementById(wert.id).innerHTML;
 	var produktTypAusJSONObj = string.slice(0,string.indexOf(','));
 	document.getElementById('ProduktTyp').innerHTML=produktTypAusJSONObj;
+	
+	var wertString;
+	var produktTyp;
+	if(tourID == 1)
+	{
+		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null)
+		{	
+			wertString = wert.id.toString();
+			produktTyp = wertString.slice(0, wertString.indexOf(','));
+			var cancelButton = ('<li><a href="#Tour1Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyButton = ('<li><a href="#Tour1Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
+			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
+		}
+		else
+		{
+			wertString = wert.id.toString();
+			produktTyp = wertString.slice(0, wertString.indexOf(','));
+			$('#Cancel').attr('href', '#Tour1Page');
+			$('#Apply').attr('href', '#Tour1Page');
+			$('#Apply').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+		}
+	}
+	
+	if(tourID == 2)
+	{
+		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null)
+		{	
+			wertString = wert.id.toString();
+			produktTyp = wertString.slice(0, wertString.indexOf(','));
+			var cancelButton = ('<li><a href="#Tour2Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyButton = ('<li><a href="#Tour2Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
+			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
+		}
+		else
+		{
+			wertString = wert.id.toString();
+			produktTyp = wertString.slice(0, wertString.indexOf(','));
+			$('#Cancel').attr('href', '#Tour2Page');
+			$('#Apply').attr('href', '#Tour2Page');
+			$('#Apply').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+		}
+	}
 }
 
 
@@ -233,8 +276,11 @@ function passParameter(wert)
 	  });
 });*/
 
-function erfasseProdukt()
+function erfasseProdukt(typ, tourID)
 {
+	var erfassteProdukteArray;
+	
+	var produktTyp = typ.toString();
 	var liter15 = $('#Liter15Grad').val();
 	var dichte = $('#Dichte').val();
 	var Nr = $('#Nr').val();
@@ -242,11 +288,83 @@ function erfasseProdukt()
 	var Kilo = $('#Kilo').val();
 	var Beginn = $('#Beginn').val();
 	var Ende = $('#Ende').val();
+	var JSONObj = {"Produkttyp":produktTyp, "Liter 15°C":liter15, "Dichte":dichte, "Nr.":Nr, "Liter":Liter, "Kilo":Kilo, "Beginn":Beginn, "Ende":Ende};
 	
-	var erfassteProdukteArray = [];
-	var JSONObject = {"Liter 15°C":liter15}, {"Dichte":dichte}, {"Nr.":Nr}, {"Liter":Liter}, {"Kilo":Kilo}, {"Beginn":Beginn}, {"Ende":Ende};
-	erfassteProdukteArray.push(JSONObject);
-	localStorage.setItem("Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+	if(tourID == 1)
+	{
+		erfassteProdukteArray = localStorage.getItem("Tour 1-Erfasste Produkte");
+	
+		if(!erfassteProdukteArray)
+		{
+			erfassteProdukteArray = [];
+			erfassteProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+		}
+		else
+		{
+			erfassteProdukteArray = JSON.parse(erfassteProdukteArray);
+			for(var i=0; i<erfassteProdukteArray.length; i++)
+			{
+				var key = "Produkttyp";
+				var innerJSONObject = erfassteProdukteArray[i];
+				if(typ == innerJSONObject[key])
+				{
+					//try reload window and set .val() to all inputs before, чтобы потом водиле только неправильно введенные данные исправить!!
+					erfassteProdukteArray.splice(i, 1, JSONObj);
+					localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+					resetProductData();
+					return;
+				}
+				
+			}
+			erfassteProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+		}
+		resetProductData();
+	}
+	
+	if(tourID == 2)
+	{
+		erfassteProdukteArray = localStorage.getItem("Tour 2-Erfasste Produkte");
+	
+		if(!erfassteProdukteArray)
+		{
+			erfassteProdukteArray = [];
+			erfassteProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+		}
+		else
+		{
+			erfassteProdukteArray = JSON.parse(erfassteProdukteArray);
+			for(var i=0; i<erfassteProdukteArray.length; i++)
+			{
+				var key = "Produkttyp";
+				var innerJSONObject = erfassteProdukteArray[i];
+				if(typ == innerJSONObject[key])
+				{
+					erfassteProdukteArray.splice(i, 1, JSONObj);
+					localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+					resetProductData();
+					return;
+				}
+				
+			}
+			erfassteProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
+		}
+		resetProductData();
+	}
+}
+
+function resetProductData()
+{
+	$('#Liter15Grad').val('');
+	$('#Dichte').val('');
+	$('#Nr').val('');
+	$('#Liter').val('');
+	$('#Kilo').val('');
+	$('#Beginn').val('');
+	$('#Ende').val('');
 }
 
 $(document).bind('pagechange', function() 

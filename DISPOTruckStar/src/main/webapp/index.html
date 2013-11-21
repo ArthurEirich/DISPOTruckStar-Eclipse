@@ -215,8 +215,10 @@
 			</div>
 			
 			<div data-role="content" id="TourenPageContent">
-					<a href="#Tour1Page" rel="external" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
-					<a href="#Tour2Page" rel="external" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
+				<div data-role="controlgroup" id="TourenPageContentControlgroup">
+					<li><a href="#Tour1Page" rel="external" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
+					<li><a href="#Tour2Page" rel="external" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
+				</div>
 			</div>
 			
 			<div data-role="footer" data-position="fixed" data-theme="e">
@@ -315,9 +317,7 @@
 			
 			<div data-role="footer" data-position="fixed" data-theme="e">
 				<div data-role="navbar">
-					<ul>
-						<li><a href="#Touren" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>
-						<li><a href="#Touren" rel="external" data-role="button" onclick="erfasseProdukt()" data-icon="check" data-theme="e">Bestätigung</a></li>
+					<ul id="ProduktErfassungPageFooter">
 					</ul>
 				</div>
 			</div>
