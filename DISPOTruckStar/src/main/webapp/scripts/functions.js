@@ -223,10 +223,29 @@ function passParameter(wert, tourID)
 	var produktTyp;
 	if(tourID == 1)
 	{
+		wertString = wert.id.toString();
+		produktTyp = wertString.slice(0, wertString.indexOf(','));
+		var tour1ErfassteProdukte = localStorage.getItem('Tour 1-Erfasste Produkte');
+		if(tour1ErfassteProdukte)
+		{
+			tour1ErfassteProdukte = JSON.parse(tour1ErfassteProdukte);
+			for(var i=0; i<tour1ErfassteProdukte.length; i++)
+			{
+				var innerJSONObject = tour1ErfassteProdukte[i];
+				if(produktTyp == innerJSONObject["Produkttyp"])
+				{
+					$('#Liter15Grad').val(innerJSONObject["Liter 15°C"]);
+					$('#Dichte').val(innerJSONObject["Dichte"]);
+					$('#Nr').val(innerJSONObject["Nr."]);
+					$('#Liter').val(innerJSONObject["Liter"]);
+					$('#Kilo').val(innerJSONObject["Kilo"]);
+					$('#Beginn').val(innerJSONObject["Beginn"]);
+					$('#Ende').val(innerJSONObject["Ende"]);
+				}
+			}
+		}
 		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null)
 		{	
-			wertString = wert.id.toString();
-			produktTyp = wertString.slice(0, wertString.indexOf(','));
 			var cancelButton = ('<li><a href="#Tour1Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
 			var applyButton = ('<li><a href="#Tour1Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
@@ -244,10 +263,29 @@ function passParameter(wert, tourID)
 	
 	if(tourID == 2)
 	{
+		wertString = wert.id.toString();
+		produktTyp = wertString.slice(0, wertString.indexOf(','));
+		var tour2ErfassteProdukte = localStorage.getItem('Tour 2-Erfasste Produkte');
+		if(tour2ErfassteProdukte)
+		{
+			tour2ErfassteProdukte = JSON.parse(tour2ErfassteProdukte);
+			for(var i=0; i<tour2ErfassteProdukte.length; i++)
+			{
+				var innerJSONObject = tour2ErfassteProdukte[i];
+				if(produktTyp == innerJSONObject["Produkttyp"])
+				{
+					$('#Liter15Grad').val(innerJSONObject["Liter 15°C"]);
+					$('#Dichte').val(innerJSONObject["Dichte"]);
+					$('#Nr').val(innerJSONObject["Nr."]);
+					$('#Liter').val(innerJSONObject["Liter"]);
+					$('#Kilo').val(innerJSONObject["Kilo"]);
+					$('#Beginn').val(innerJSONObject["Beginn"]);
+					$('#Ende').val(innerJSONObject["Ende"]);
+				}
+			}
+		}
 		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null)
 		{	
-			wertString = wert.id.toString();
-			produktTyp = wertString.slice(0, wertString.indexOf(','));
 			var cancelButton = ('<li><a href="#Tour2Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
 			var applyButton = ('<li><a href="#Tour2Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
@@ -309,7 +347,6 @@ function erfasseProdukt(typ, tourID)
 				var innerJSONObject = erfassteProdukteArray[i];
 				if(typ == innerJSONObject[key])
 				{
-					//try reload window and set .val() to all inputs before, чтобы потом водиле только неправильно введенные данные исправить!!
 					erfassteProdukteArray.splice(i, 1, JSONObj);
 					localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
 					resetProductData();
