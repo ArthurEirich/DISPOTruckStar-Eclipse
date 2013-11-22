@@ -221,7 +221,6 @@ function passParameter(wert, tourID)
 	
 	var wertString;
 	var produktTyp;
-	
 	if(tourID == 1)
 	{
 		wertString = wert.id.toString();
