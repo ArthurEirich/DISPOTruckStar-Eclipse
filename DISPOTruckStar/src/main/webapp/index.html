@@ -144,11 +144,7 @@
 
                 <div data-role="fieldcontain">
                     <h3><label for="FahrerAuswahl" class="select">Fahrer:</label></h3>
-                    <select name="FahrerAuswahl" id="FahrerAuswahl">
-                    
-						<!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
-						
-                    </select>
+                    <select name="FahrerAuswahl" id="FahrerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
                 <div data-role="fieldcontain">
@@ -158,11 +154,7 @@
 
                 <div data-role="fieldcontain">
                     <h3><label for="AufliegerAuswahl" class="select">Auflieger:</label></h3>
-                    <select name="AufliegerAuswahl" id="AufliegerAuswahl">
-                    
-                    	<!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
-                    	
-                    </select>
+                    <select name="AufliegerAuswahl" id="AufliegerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
 	            <div data-role="footer" data-position="fixed" data-theme="e">
@@ -170,7 +162,7 @@
 	                    <ul>
 	                        <li><a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zum DISPO Truck Star</a></li>
 	                        <li><a href="#changePass" rel="external" data-role="button" data-icon="refresh" data-theme="e">PIN ändern</a></li>
-	                        <li><a href="#Touren" rel="external" data-role="button" data-icon="arrow-r" data-theme="e">Bestätigung und weiter zu den Touren</a></li>
+	                        <li><a rel="external" data-role="button" id="anmeldeBildschirmConfirmButton" onclick="setCurrentDriverData()" data-icon="arrow-r" data-theme="e">Bestätigung und weiter zu den Touren</a></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -280,27 +272,27 @@
 			
 				<div data-role="fieldcontain">
 		            <label for="Liter15Grad">Liter 15°C:</label>
-		            <input type="text" name="Liter15Grad" id="Liter15Grad" value="" placeholder="Liter 15°C" data-clear-btn="true"/>
+		            <input type="number" min="0" max="36000" name="Liter15Grad" id="Liter15Grad" value="" placeholder="Liter 15°C" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Dichte">Dichte:</label>
-		            <input type="text" name="Dichte" id="Dichte" value="" placeholder="Dichte" data-clear-btn="true"/>
+		            <input type="number" min="500" max="1000" name="Dichte" id="Dichte" value="" placeholder="Dichte" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Nr">Nr.:</label>
-		            <input type="text" name="Nr" id="Nr" value="" placeholder="Nummer des Ladenscheins" data-clear-btn="true"/>
+		            <input type="number" name="Nr" id="Nr" value="" placeholder="Nummer des Ladenscheins" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Liter">Liter:</label>
-		            <input type="text" name="Liter" id="Liter" value="" placeholder="Liter" data-clear-btn="true"/>
+		            <input type="number" min="0" max="36000" name="Liter" id="Liter" value="" placeholder="Liter" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Kilo">Kilo:</label>
-		            <input type="text" name="Kilo" id="Kilo" value="" placeholder="Kilo" data-clear-btn="true"/>
+		            <input type="number" min="0" max="36000" name="Kilo" id="Kilo" value="" placeholder="Kilo" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
