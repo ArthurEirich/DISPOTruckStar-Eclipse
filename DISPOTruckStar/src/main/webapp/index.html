@@ -30,7 +30,7 @@
             </div>
             
             <div data-role="content">
-                <a href="#startscreen" rel="external" data-role="button" id="DISPOTruckStar" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">DISPO Truck Star</a>
+                <a href="#startscreen" data-role="button" id="DISPOTruckStar" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">DISPO Truck Star</a>
                 <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="loadLastConfig()" data-theme="e" data-icon="gear" data-iconpos="right" data-inline="">Letzte Konfiguration</a>
                 <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="resetConfig()" data-theme="e" data-icon="gear" data-iconpos="right">Werkeinstellungen</a>
             </div>
@@ -40,7 +40,7 @@
                     <ul>
                         <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="plus" data-theme="e">Zoom</a></li>
                         <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="gear"data-theme="e">Tools</a></li>
-                        <li><a href="#helpPageId" rel="external" data-role="button" data-icon="alert" data-theme="e">Help</a></li>
+                        <li><a href="#helpPageId" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Help</a></li>
                     </ul>
                 </div>
             </div>
@@ -160,8 +160,8 @@
 	            <div data-role="footer" data-position="fixed" data-theme="e">
 	                <div data-role="navbar">
 	                    <ul>
-	                        <li><a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zum DISPO Truck Star</a></li>
-	                        <li><a href="#changePass" rel="external" data-role="button" data-icon="refresh" data-theme="e">PIN ändern</a></li>
+	                        <li><a href="#startscreen" data-role="button" data-icon="back" data-theme="e" >Zurück zum DISPO Truck Star</a></li>
+	                        <li><a href="#changePass"  data-role="button" data-rel="dialog" data-icon="refresh" data-theme="e">PIN ändern</a></li>
 	                        <li><a rel="external" data-role="button" id="anmeldeBildschirmConfirmButton" onclick="setCurrentDriverData()" data-icon="arrow-r" data-theme="e">Bestätigung und weiter zu den Touren</a></li>
 	                    </ul>
 	                </div>
@@ -189,12 +189,12 @@
                 </div>
 
                 <div data-role="fieldcontain">
-                    <label for="confirmNewPassword">Neues Passwort:</label>
+                    <label for="confirmNewPassword">Bestätigung:</label>
                     <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
                 </div>
 
-                <a href="#anmeldeBildschirm" rel="external" data-role="button" data-theme="e" data-inline="true" data-icon="delete">Abbrechen</a>
-                <a href="#anmeldeBildschirm" rel="external" data-role="button" id="changePassword" onclick="changePassword()" data-inline="true"
+                <a href="#anmeldeBildschirm" data-role="button" data-theme="e" data-inline="true" data-icon="delete">Abbrechen</a>
+                <a data-role="button" id="changePassword" onclick="changePassword()" data-inline="true"
                                 data-theme="c" data-icon="check" data-iconpos="right">Passwort ändern</a>
             </div>
 
@@ -312,6 +312,18 @@
 					<ul id="ProduktErfassungPageFooter">
 					</ul>
 				</div>
+			</div>
+			
+		</div>
+		
+		<div data-role="page" id="ProduktAbladePage">
+		
+			<div data-role="header" data-position="fixed" data-theme="b">
+				Produktabgabe
+			</div>
+			
+			<div data-role="content">
+				
 			</div>
 			
 		</div>

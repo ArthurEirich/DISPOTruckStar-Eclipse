@@ -78,8 +78,8 @@ function setAnzahlTouren() // berechnet die Länge des Tourenarrays
 function setCurrentDriverData() // Einlesen des ausgewählten Fahrers, eingegebenen Passworts und der Fahrzeugnummer 
 {
 	var currentDriver = String($('#FahrerAuswahl option:selected').text()); 
-	var driverPassword = String($('#password').val().toString());
-	var currentVehicleNumber = String($('#AufliegerAuswahl option:selected').text().toString());
+	var driverPassword = String($('#password').val());
+	var currentVehicleNumber = String($('#AufliegerAuswahl option:selected').text());
 	var isPasswordCorrect = checkPassword(currentDriver, driverPassword); // Überprüfung, ob das eingegebene Passwort mit dem dem Fahrer zugewiesenen Passwort übereinstimmt
 	if(isPasswordCorrect == true) // wenn ja
 	{
@@ -87,6 +87,7 @@ function setCurrentDriverData() // Einlesen des ausgewählten Fahrers, eingegebe
 		localStorage.setItem("currentVehicleNumber", currentVehicleNumber); // dasselbe für seine Fahrzeugnummer (wird beim nächsten Start der App ebenfalls vorbelegt)...
 		localStorage.setItem("driverPassword", driverPassword); //... und Passwort
 		$.mobile.changePage("#Touren"); // Weiterleitung zu den Touren
+		$('#password').val('');
 	}
 	else // wenn nein
 	{	
@@ -209,6 +210,47 @@ function updateAnmeldeBildschirm()
 	setVehicleSelectionMenu(); // und des Fahrzeugs
 }
 
+function changePassword() // Diese Methode dient zur Passwortänderung
+{
+	var oldPassInDialog = $('#oldPassword').val(); // Das in dem Popup-Dialog eingegebene alte Passwort
+	var driverPassword = localStorage.getItem('driverPassword'); // Das im Local Storage gespeicherte momentane Passwort
+	var newPassword = $('#newPassword').val(); // Das neu eingegebene Passwort
+	var confirmNewPassword = $('#confirmNewPassword').val(); // und dessen Bestätigung
+	
+	if(oldPassInDialog == driverPassword && newPassword == confirmNewPassword) // Wenn das momentane Passwort und das in dem Dialog eingegebene alte Passwort sowie
+		// das neu eingegebene und bestätigte Passwörter übereinstimmen
+	{
+		localStorage.setItem('driverPassword', newPassword); // wird das Passwort auf das neue geändert und im Local Storage gespeichert
+		changeDriverPassInTable(newPassword); // Das neue Passwort auch in der Fahrertabelle ändern; diese befindet sich im Local Storage als ein JSONArray gespeichert
+		alert("Ihr Passwort wurde erfolgreich geändert!"); // Feedback für den Benutzer, dass die Aktion erfolgreich war
+		$.mobile.changePage('#anmeldeBildschirm'); // Weiterleitung zu der Fahreranmeldeseite 
+	}
+	if(newPassword != confirmNewPassword) // Wenn die beiden neuen Passwörter ungleich sind
+	{
+		// wird die entsprechende Meldung ausgegeben, der Nutzer aufgefordert, beide Passwörter korrekt einzugeben und
+		alert("Das neue Passwort und die Passwortbestätigung stimmen nicht überein! Versuchen Sie es bitte erneut!");
+		var newPassword = $('#newPassword').val('');
+		var confirmNewPassword = $('#confirmNewPassword').val('');
+	}
+}
+
+function changeDriverPassInTable(newPassword) // Diese Methode soll das Passwort auch in der im Local Storage als JSONArray gespeicherten Fahrertabelle ändern
+{
+	var JSONArray = holeArray('Minova_DispoClient_Data_DriverBean_array'); // Zuerst wird der Array herausgelesen
+	var text = "Text";
+	var pinCode = "PinCode";
+	var currentDriver = $('#FahrerAuswahl option:selected').text()
+	for(var i=0; i<JSONArray.length; i++) // danach mit eine Schleife
+	{
+		var innerJSONObject = JSONArray[i];
+		if(innerJSONObject[text] == currentDriver) // der benötigte Fahrer gefunden
+		{
+			innerJSONObject[pinCode] = newPassword; // und dass Passwort auf das neue gesetzt
+		}
+	}
+	localStorage.setItem('Minova_DispoClient_Data_DriverBean_array', JSON.stringify(JSONArray)); // Abschliessend wird der alte Array mit dem neuen überschrieben
+}
+
 function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite, die die Touren anzeigt
 {
 	var tankLagerNameTour1 = "BURGHAUSEN";
@@ -219,7 +261,10 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 	
 	var JSONArrayDepot = holeArray("Minova_DispoClient_Data_DepotBean_array");
 	var JSONArrayLoadOrder = holeArray("Minova_DispoClient_Data_LoadOrderBean_array");
+	var JSONArrayDelivery = holeArray("Minova_DispoClient_Data_DeliveryBean_array");
 	
+	var keyLong = "Keylong";
+	var deliveryKey = "DeliveryKey";
 	var text = "Text";
 	var city = "City";
 	var street = "Street";
@@ -232,14 +277,17 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 		for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
 		{
 			var innerJSONObjectDepot = JSONArrayDepot[i];
-			if(innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen
+			if(innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 			{
 				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
 				$('#Tour1PageContent').append('<div><b>' + touren[tourID-1] + '</b></div>');
 				$('#Tour1PageContent').append('<div><b>Ort: ' + innerJSONObjectDepot[city] + '</b></div>');
 				$('#Tour1PageContent').append('<div><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
-				$('#Tour1PageContent').append('<div><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
+				$('#Tour1PageContent').append('<div><b>Tel.: '+innerJSONObjectDepot[phone]+'<br></b></div>');
+				$('#Tour1PageContent').append('<div id="LadeauftraegeTour1">Ladeaufträge für diese Tour:<br></div>');
 				$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Produkte"></div>');
+				$('#Tour1PageContent').append('<div id="LieferauftraegeTour1">Lieferaufträge für diese Tour:<br></div>');
+				$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Kunden"></div>');
 			}
 			
 			for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
@@ -248,10 +296,27 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == "")) 
 					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameter(this, tourID)", 
+					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameterToErfassung(this, tourID)", 
 					//die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
-					var button = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
-					$('#Tour1Produkte').append(button).trigger('create');
+					var buttonLinkToErfassung = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameterToErfassung(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					$('#Tour1Produkte').append(buttonLinkToErfassung).trigger('create');
+				}
+			}
+			
+			for(var z=0; z<JSONArrayDelivery.length; z++)
+			{
+				var innerJSONObjectDelivery = JSONArrayDelivery[z];
+				if(innerJSONObjectDelivery[tripKey] === "4771" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == ""))
+				{
+					var buttonLinkToVerladung = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectDelivery[text]+'" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
+					$('#Tour1Kunden').append(buttonLinkToVerladung).trigger('create');
+					/*
+					 * 
+					 * TODO Inhalt der Abladeseite implementieren und jeweils anpassen
+					 * 
+					 * 
+					 * 
+					 * */
 				}
 			}
 		}
@@ -262,14 +327,16 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 		for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
 		{
 			var innerJSONObjectDepot = JSONArrayDepot[i];
-			if(innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen
+			if(innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 			{
 				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
 				$('#Tour2PageContent').append('<div><b>' + touren[tourID-1] + '</b></div>');
 				$('#Tour2PageContent').append('<div><b>Ort: ' + innerJSONObjectDepot[city] + '</b></div>');
 				$('#Tour2PageContent').append('<div><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
 				$('#Tour2PageContent').append('<div><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
+				$('#Tour2PageContent').append('<div id="LadeauftraegeTour2">Ladeaufträge für diese Tour:<br></div>');
 				$('#Tour2PageContent').append('<div data-role="controlgroup" id="Tour2Produkte"></div>');
+				$('#Tour2PageContent').append('<div id="Tour2Kunden"></div>');
 			}
 			
 			for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
@@ -278,10 +345,10 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
 					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameter(this, tourID)", 
+					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameterToErfassung(this, tourID)", 
 					// die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
 					// Als Id für die Buttons dient die jeweilige Art des Produkts (Bsp.: "Diesel mit Additiv, 6500 Liter")
-					var produktTypButton = ('<a href="#ProduktErfassungPage" rel="external" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameter(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					var produktTypButton = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameterToErfassung(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
 					$('#Tour2Produkte').append(produktTypButton).trigger('create');
 				}
 			}
@@ -289,7 +356,7 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 	}
 } // end function
 
-function passParameter(wert, tourID)
+function passParameterToErfassung(wert, tourID)
 {
 	var string = document.getElementById(wert.id).innerHTML;
 	var produktTypAusJSONObj = string.slice(0,string.indexOf(',')); //Abschneiden der Button-Id aus der vorherigen Methode
@@ -326,8 +393,8 @@ function passParameter(wert, tourID)
 		{
 			// falls noch keine Buttons generiert wurden, passiert es in den nächsten Zeilen
 			// dem Button wird die Methode "erfasseProdukt(produktTyp, tourID)" zugewiesen 
-			var cancelButton = ('<li><a href="#Tour1Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyButton = ('<li><a href="#Tour1Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelButton = ('<li><a href="#Tour1Page" id="Cancel" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyButton = ('<li><a href="#Tour1Page" id="Apply" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
 			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
 		}
@@ -372,8 +439,8 @@ function passParameter(wert, tourID)
 		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null) // Zum Schluss werden die Buttons für "Abbruch" und "Bestätigung" der Eingabe
 			// der erfassten Daten generiert
 		{	
-			var cancelButton = ('<li><a href="#Tour2Page" id="Cancel" rel="external" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyButton = ('<li><a href="#Tour2Page" id="Apply" rel="external" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelButton = ('<li><a href="#Tour2Page" id="Cancel" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyButton = ('<li><a href="#Tour2Page" id="Apply" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
 			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
 		}

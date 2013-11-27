@@ -6,6 +6,7 @@ function fillLocalStorage() {
 		holeArray("Minova_DispoClient_Data_DeliveryExtensionBean_array");
 		holeArray("Minova_DispoClient_Data_DepotBean_array");
 		holeArray("Minova_DispoClient_Data_DriverBean_array");
+		holeArray("Minova_DispoClient_Data_ItemBean_array");
 		holeArray("Minova_DispoClient_Data_LoadOrderBean_array");
 		holeArray("Minova_DispoClient_Data_MessageBean_array");
 		holeArray("Minova_DispoClient_Data_ShipmentBean_array");
@@ -741,6 +742,268 @@ function holeArray(name) {
 			localStorage.setItem(name, JSON.stringify(resultValue));
 		}
 
+		else {
+			resultValue = JSON.parse(resultValue);
+		}
+	}
+	
+	else if(name == "Minova_DispoClient_Data_ItemBean_array") {
+		resultValue = localStorage.getItem(name);
+		if (!resultValue) {
+			resultValue = [ // start of JSONArray
+           {
+               "KeyLong": "17",
+               "Text": "DK",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "16",
+               "Text": "DK add 100",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "19",
+               "Text": "ES 95 120",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "40",
+               "Text": "VP DK add 100",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1834",
+               "Text": "NP DK add 100",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1835",
+               "Text": "PS DK add 100",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "42",
+               "Text": "VP ES 95 120",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1844",
+               "Text": "NP ES 95 120",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1868",
+               "Text": "PS ES 95 120",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "16",
+               "Text": "DK add 100",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "20",
+               "Text": "NB 91 130",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "19",
+               "Text": "ES 95 120",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "18",
+               "Text": "ES 98 140",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "40",
+               "Text": "VP DK add 100",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1834",
+               "Text": "NP DK add 100",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1835",
+               "Text": "PS DK add 100",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "46",
+               "Text": "VP NB 91 130",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1848",
+               "Text": "NP NB 91 130",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1872",
+               "Text": "PS NB 91 130",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "42",
+               "Text": "VP ES 95 120",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1844",
+               "Text": "NP ES 95 120",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1868",
+               "Text": "PS ES 95 120",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "49",
+               "Text": "VP ES 98 140",
+               "Additive": "0",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "1"
+           },
+           {
+               "KeyLong": "1851",
+               "Text": "NP ES 98 140",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           },
+           {
+               "KeyLong": "1875",
+               "Text": "PS ES 98 140",
+               "Additive": "1",
+               "MeterNumber": "NULL",
+               "ADRText": "NULL",
+               "ADRText2": "NULL",
+               "NullPrint": "NULL",
+               "TankLevel": "0"
+           } ]; // end of JSONArray
+			localStorage.setItem(name, JSON.stringify(resultValue));
+		}
+		
 		else {
 			resultValue = JSON.parse(resultValue);
 		}
