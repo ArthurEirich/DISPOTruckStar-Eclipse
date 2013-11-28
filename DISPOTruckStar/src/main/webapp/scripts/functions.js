@@ -263,7 +263,6 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 	var JSONArrayLoadOrder = holeArray("Minova_DispoClient_Data_LoadOrderBean_array");
 	var JSONArrayDelivery = holeArray("Minova_DispoClient_Data_DeliveryBean_array");
 	
-	var keyLong = "Keylong";
 	var deliveryKey = "DeliveryKey";
 	var text = "Text";
 	var city = "City";
@@ -296,9 +295,9 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == "")) 
 					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameterToErfassung(this, tourID)", 
+					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
 					//die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
-					var buttonLinkToErfassung = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameterToErfassung(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					var buttonLinkToErfassung = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
 					$('#Tour1Produkte').append(buttonLinkToErfassung).trigger('create');
 				}
 			}
@@ -308,8 +307,8 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				var innerJSONObjectDelivery = JSONArrayDelivery[z];
 				if(innerJSONObjectDelivery[tripKey] === "4771" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == ""))
 				{
-					var buttonLinkToVerladung = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectDelivery[text]+'" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
-					$('#Tour1Kunden').append(buttonLinkToVerladung).trigger('create');
+					var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
+					$('#Tour1Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
 					/*
 					 * 
 					 * TODO Inhalt der Abladeseite implementieren und jeweils anpassen
@@ -345,22 +344,31 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
 					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "passParameterToErfassung(this, tourID)", 
+					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
 					// die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
 					// Als Id für die Buttons dient die jeweilige Art des Produkts (Bsp.: "Diesel mit Additiv, 6500 Liter")
-					var produktTypButton = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="passParameterToErfassung(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+					var produktTypButton = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
 					$('#Tour2Produkte').append(produktTypButton).trigger('create');
 				}
 			}
+			
+			/*
+			 * 
+			 * 
+			  TODO Tour2Kunden Buttons implementieren und danach den Inhalt der Methode adjustKundenLieferAuftraege anpassen
+			 * 
+			 * 
+			 */
+			
 		}
 	}
 } // end function
 
-function passParameterToErfassung(wert, tourID)
+function adjustErfassungPage(wert, tourID)
 {
 	var string = document.getElementById(wert.id).innerHTML;
-	var produktTypAusJSONObj = string.slice(0,string.indexOf(',')); //Abschneiden der Button-Id aus der vorherigen Methode
-	document.getElementById('ProduktTyp').innerHTML=produktTypAusJSONObj; // Einfügen des Produkttyps in die Eingabemaske, damit der Fahrer sieht, welches Produkt er gerade erfassen soll
+	var produktTypAusJSONObj = string.slice(0,string.indexOf(',')); //Abschneiden der Button-Id aus der vorherigen Methode (die ID enthält das Produkttyp)
+	document.getElementById('ProduktTypErfassung').innerHTML=produktTypAusJSONObj; // Einfügen des Produkttyps in die Eingabemaske, damit der Fahrer sieht, welches Produkt er gerade erfassen soll
 	
 	var wertString;
 	var produktTyp;
@@ -389,14 +397,14 @@ function passParameterToErfassung(wert, tourID)
 			}
 		} // wenn es keine erfassten Produkte gibt, passiert nichts; die Maske wird leer eingeblendet
 		
-		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null) // Generieren von den Footer-Buttons für "Abbruch" und "Bestätigung" der Eingabe der Erfassungswerte
+		if(document.getElementById('CancelErfassung') == null && document.getElementById('ApplyErfassung') == null) // Generieren von den Footer-Buttons für "Abbruch" und "Bestätigung" der Eingabe der Erfassungswerte
 		{
 			// falls noch keine Buttons generiert wurden, passiert es in den nächsten Zeilen
 			// dem Button wird die Methode "erfasseProdukt(produktTyp, tourID)" zugewiesen 
-			var cancelButton = ('<li><a href="#Tour1Page" id="Cancel" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyButton = ('<li><a href="#Tour1Page" id="Apply" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
-			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
-			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
+			var cancelErfassungButton = ('<li><a href="#Tour1Page" id="CancelErfassung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyErfassungButton = ('<li><a href="#Tour1Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktErfassungPageFooter').append(cancelErfassungButton).trigger('create');
+			$('#ProduktErfassungPageFooter').append(applyErfassungButton).trigger('create');
 		}
 		else // falls die Buttons schon generiert und erstellt wurden
 		{
@@ -405,9 +413,9 @@ function passParameterToErfassung(wert, tourID)
 			// und die Parameter der Methode "erfasseProdukt" verändert
 			wertString = wert.id.toString();
 			produktTyp = wertString.slice(0, wertString.indexOf(','));
-			$('#Cancel').attr('href', '#Tour1Page');
-			$('#Apply').attr('href', '#Tour1Page');
-			$('#Apply').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+			$('#CancelErfassung').attr('href', '#Tour1Page');
+			$('#ApplyErfassung').attr('href', '#Tour1Page');
+			$('#ApplyErfassung').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
 		}
 	}
 	
@@ -436,22 +444,85 @@ function passParameterToErfassung(wert, tourID)
 			}
 		} // falls es kein erfasstes Produkt gibt, wird die Maske leer generiert
 		
-		if(document.getElementById('Cancel') == null && document.getElementById('Apply') == null) // Zum Schluss werden die Buttons für "Abbruch" und "Bestätigung" der Eingabe
+		if(document.getElementById('CancelErfassung') == null && document.getElementById('ApplyErfassung') == null) // Zum Schluss werden die Buttons für "Abbruch" und "Bestätigung" der Eingabe
 			// der erfassten Daten generiert
 		{	
-			var cancelButton = ('<li><a href="#Tour2Page" id="Cancel" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyButton = ('<li><a href="#Tour2Page" id="Apply" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
-			$('#ProduktErfassungPageFooter').append(cancelButton).trigger('create');
-			$('#ProduktErfassungPageFooter').append(applyButton).trigger('create');
+			var cancelErfassungButton = ('<li><a href="#Tour2Page" id="CancelErfassung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyErfassungButton = ('<li><a href="#Tour2Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktErfassungPageFooter').append(cancelErfassungButton).trigger('create');
+			$('#ProduktErfassungPageFooter').append(applyErfassungButton).trigger('create');
 		}
 		else // bzw. deren Verhalten angepasst, also Verlinkung und Methodenparameter beim Klick verändert
 		{
 			wertString = wert.id.toString();
 			produktTyp = wertString.slice(0, wertString.indexOf(','));
-			$('#Cancel').attr('href', '#Tour2Page');
-			$('#Apply').attr('href', '#Tour2Page');
-			$('#Apply').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+			$('#CancelErfassung').attr('href', '#Tour2Page');
+			$('#ApplyErfassung').attr('href', '#Tour2Page');
+			$('#ApplyErfassung').attr('onclick', 'erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
 		}
+	}
+}
+
+function adjustKundenLieferAuftraege(wert, tourID)
+{
+	var tour1ErfassteProdukte = localStorage.getItem('Tour 1-Erfasste Produkte');
+	var tour2ErfassteProdukte = localStorage.getItem('Tour 2-Erfasste Produkte');
+	var kundenLieferAuftraegePageContent = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
+	var JSONArrayDelivery = holeArray('Minova_DispoClient_Data_DeliveryBean_array');
+	var JSONArrayShipment = holeArray('Minova_DispoClient_Data_ShipmentBean_array');
+	var keyLong = "KeyLong";
+	var keyLongValue;
+	var keyLongArray = new Array();
+	var text = "Text";
+	var deliveryKey = "DeliveryKey";
+	var shipmentKey = "ShipmentKey";
+	
+	if(tourID == 1)
+	{
+		if(!tour1ErfassteProdukte)
+		{
+			alert("Sie können noch keine Produkte abladen! Bitte erfassen Sie zuerst welche!");
+			var btnID = "#"+wert.id;
+			$(btnID).removeClass('ui-btn-active');
+			return;
+		//	$.mobile.changePage('#Tour1Page');
+		}
+		
+		else
+		{
+			for(var i=0; i<JSONArrayDelivery.length; i++)
+			{
+				var innerJSONObjectDelivery = JSONArrayDelivery[i];
+				if(innerJSONObjectDelivery[text] == wert.id)
+				{
+					keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
+					keyLongArray.push(keyLongValue);
+				}
+				if(keyLongValue == innerJSONObjectDelivery[deliveryKey])
+				{
+					keyLongArray.push(innerJSONObjectDelivery[keyLong]);
+				}
+			}
+			
+			for(var y=0; y<JSONArrayShipment.length; y++)
+			{
+				var innerJSONObjectShipment = JSONArrayShipment[y];
+				for(var z=0; z<keyLongArray.length; z++)
+				{
+					if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
+					{
+						var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+						$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
+					}
+				}
+			}
+		}
+		$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu der Tour</a></li>').trigger('create');
+	}
+	
+	if(tourID == 2)
+	{
+		/**************************************Hier ähnlicher Code wie für ID = 1****************************************/
 	}
 }
 
@@ -543,6 +614,21 @@ function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Ein
 		}
 		resetProductData();
 	}
+}
+
+function verladeProdukt()
+{
+	/*********************
+	 * 
+	 * if(document.getElementById('CancelAbladung') == null && document.getElementById('ApplyAbladung') == null)
+			{
+				var cancelAbladungButton = ('<li><a href="#Tour1Kunden" id="CancelAbladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+				var applyAbladungButton = ('<li><a href="#Tour1Kunden" id="ApplyAbladung" data-role="button" onclick="verladeProdukt('+"'"+innerJSONObjectShipment[text]+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			}
+	 * 
+	 * 		UND SO WEITER.......!!!!!!!!!!!!!!!
+	 * 
+	 * **Diese Methode implementieren*********************/
 }
 
 function resetProductData() // Diese Methode entfernt die eingegebenen Werte bei der Produkterfassung

@@ -208,8 +208,8 @@
 			
 			<div data-role="content" id="TourenPageContent">
 				<div data-role="controlgroup" id="TourenPageContentControlgroup">
-					<li><a href="#Tour1Page" rel="external" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
-					<li><a href="#Tour2Page" rel="external" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
+					<li><a href="#Tour1Page" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
+					<li><a href="#Tour2Page" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
 				</div>
 			</div>
 			
@@ -253,7 +253,7 @@
 			<div data-role="footer" data-position="fixed" data-theme="e">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zu den Touren</a></li>
+                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu den Touren</a></li>
                     </ul>
                 </div>
             </div>
@@ -268,7 +268,7 @@
 			
 			<div data-role="content">
 			
-				<div>Produkt:<b><span id="ProduktTyp">unknown</span></b></div>
+				<div>Produkt:<b><span id="ProduktTypErfassung">unknown</span></b></div>
 			
 				<div data-role="fieldcontain">
 		            <label for="Liter15Grad">Liter 15°C:</label>
@@ -315,6 +315,25 @@
 			</div>
 			
 		</div>
+			
+		<div data-role="page" id="KundenLieferAuftraege">
+		
+			<div data-role="header" data-position="fixed" data-theme="b">
+				Lieferaufträege für diesen Kunden
+			</div>
+			
+			<div data-role="content" id="KundenLieferAuftraegePageContent"></div>
+			
+			<div data-role="footer" data-position="fixed" data-theme="e">
+				<div data-role="navbar">
+					<ul id="KundenLieferAuftraegePageFooter">
+					</ul>
+				</div>
+			</div>
+			
+		</div>	
+			
+		
 		
 		<div data-role="page" id="ProduktAbladePage">
 		
@@ -323,8 +342,54 @@
 			</div>
 			
 			<div data-role="content">
+			
+				<div>Produkt:<b><span id="ProduktTypAbladung">unknown</span></b></div>
+				
+				<div data-role="fieldcontain">
+		            <label for="Abgabemenge">Abgabemenge:</label>
+		            <input type="number" min="0" max="36000" name="Abgabemenge" id="Abgabemenge" value="" placeholder="Abgabemenge" data-clear-btn="true"/>
+	            </div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Bonnummer">Bonnummer:</label>
+		            <input type="number" name="Bonnummer" id="Bonnummer" value="" placeholder="Bonnummer" data-clear-btn="true"/>
+	            </div>
+	            
+	            <div id="VorpeilungContainer"></div>
+	            
+	            <div data-role="fieldcontain">
+		            <label for="Vorpeilung">Vorpeilung:</label>
+		            <input type="number" name="Vorpeilung" id="Vorpeilung" value="" placeholder="Vorpeilung" data-clear-btn="true"/>
+	            </div>
+	            
+	            <div id="GESAMTAngabe"></div> 
+	            
+	            <div id="NachpeilungUndPumpenstandContainer"> <!-- Dieser Container wird je nach Produktart ein- oder ausgeblendet -->
+	            
+	            	<div id="NachpeilungContainer"></div>
+	            	
+	            	<div data-role="fieldcontain">
+			            <label for="NachpeilungVolume">Volume:</label>
+			            <input type="number" name="NachpeilungVolume" id="NachpeilungVolume" value="" placeholder="Volume" data-clear-btn="true"/>
+	            	</div>
+	            	
+	            	<div id="PumpenstandContainer"></div>
+	            	
+	            	<div data-role="fieldcontain">
+			            <label for="PumpenstandVolume">Volume:</label>
+			            <input type="number" name="PumpenstandVolume" id="PumpenstandVolume" value="" placeholder="Volume" data-clear-btn="true"/>
+	            	</div>
+	            	
+	            </div>
 				
 			</div>
+			
+	<!--  		<div data-role="footer" data-position="fixed" data-theme="e">
+				<div data-role="navbar">
+					<ul id="ProduktAbladungPageFooter">
+					</ul>
+				</div>
+			</div>	-->
 			
 		</div>
 
