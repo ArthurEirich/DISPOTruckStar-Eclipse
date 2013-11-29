@@ -1,11 +1,5 @@
 @charset "UTF-8";
 
-#grundZustandSeitenId
-{
-    background: url(../images/dispo.JPG) no-repeat;
-    background-size: 100% 87%;
-}
-
 #grundZustandHeader
 {
     text-align: center;
@@ -20,4 +14,158 @@
 {
     height:10px;
     width:150px
+}
+
+/* iPad Landscape NO Retina */
+@media screen and (min-device-width: 481px) and (orientation:landscape) and (-webkit-max-device-pixel-ratio: 1)
+{
+	#grundZustandHeader
+	{
+		height : 20px;
+	}
+	
+	#grundZustandInhalt
+	{
+	    /*background: url(../images/dispo.JPG) no-repeat;*/
+	    background: -webkit-linear-gradient(top, rgba(226,226,226,1) 0%,rgba(160,160,157,1) 86%); /* Chrome10+,Safari5.1+ */
+	    /*background-size: 100% 100%;*/
+	    position : absolute;
+   		top      : 20px;
+    	right    : 0;
+    	bottom   : 55px;
+    	left     : 0;
+	}
+	
+	#startButton
+	{
+		background: -webkit-linear-gradient(top, rgba(226,226,226,1) 0%,rgba(160,160,157,1) 86%); /* Chrome10+,Safari5.1+ */
+		position: absolute;
+		left: 15%;
+		top: 5%;
+		width: 70%;
+		opacity: 0.9;
+	}
+	
+	#grundZustandFooter
+	{
+		position : absolute;
+    	bottom   : 0;
+    	left     : 0;
+    	width    : 100%;
+    	height   : 60px;
+	}
+}
+
+/* iPad Portrait NO Retina */
+@media screen and (min-device-width: 481px) and (orientation:portrait) and (-webkit-max-device-pixel-ratio: 1)
+{
+	#grundZustandHeader
+	{
+		height : 20px;
+	}
+	
+	#grundZustandInhalt
+	{
+	    background: url(../images/dispoLargeCut.jpg) no-repeat;
+	    background-size: 100% 100%;
+	    position : absolute;
+   		top      : 20px;
+    	right    : 0;
+    	bottom   : 50px;
+    	left     : 0;
+	}
+	
+	#startButton
+	{
+		position: absolute;
+		left: 15%;
+		top: 5%;
+		width: 70%;
+		opacity: 0.9;
+	}
+	
+	#grundZustandFooter
+	{
+		position : absolute;
+    	bottom   : 0;
+    	left     : 0;
+    	width    : 100%;
+    	height   : 50px;
+	}
+}
+
+/*  iPhone < 5 portrait NO Retina */
+@media screen and (device-aspect-ratio: 2/3) and (-webkit-max-device-pixel-ratio: 1) and (orientation:portrait)
+{
+	#grundZustandHeader
+	{
+		height : 20px;
+	}
+	
+	#grundZustandInhalt
+	{
+	    background: url(../images/dispo_iPhone.jpg) no-repeat;
+	    background-size: 100% 100%;
+	    position : absolute;
+   		top      : 20px;
+    	right    : 0;
+    	bottom   : 20px;
+    	left     : 0;
+	}
+	
+	#startButton
+	{
+		position: absolute;
+		left: 15%;
+		top: 5%;
+		width: 70%;
+		opacity: 0.9;
+	}
+	
+	#grundZustandFooter
+	{
+		position : absolute;
+    	bottom   : 0;
+    	left     : 0;
+    	width    : 100%;
+    	height   : 20px;
+	}
+}
+
+/*  iPhone 5 and 5s portrait WITH Retina */
+@media only screen and (min-device-width: 560px) and (max-device-width: 1136px) and (-webkit-min-device-pixel-ratio: 2)
+{
+	#grundZustandHeader
+	{
+		height : 20px;
+	}
+	
+	#grundZustandInhalt
+	{
+	    background: url(../images/dispo_iPhone.jpg) no-repeat;
+	    background-size: 100% 100%;
+	    position : absolute;
+   		top      : 20px;
+    	right    : 0;
+    	bottom   : 20px;
+    	left     : 0;
+	}
+	
+	#startButton
+	{
+		position: absolute;
+		left: 15%;
+		top: 5%;
+		width: 70%;
+		opacity: 0.9;
+	}
+	
+	#grundZustandFooter
+	{
+		position : absolute;
+    	bottom   : 0;
+    	left     : 0;
+    	width    : 100%;
+    	height   : 20px;
+	}
 }

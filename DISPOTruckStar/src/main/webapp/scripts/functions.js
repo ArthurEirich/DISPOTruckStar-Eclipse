@@ -468,6 +468,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	var tour1ErfassteProdukte = localStorage.getItem('Tour 1-Erfasste Produkte');
 	var tour2ErfassteProdukte = localStorage.getItem('Tour 2-Erfasste Produkte');
 	var kundenLieferAuftraegePageContent = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
+	var kundenLieferAuftraegePageFooter = document.getElementById('KundenLieferAuftraegePageFooter').innerHTML;
 	var JSONArrayDelivery = holeArray('Minova_DispoClient_Data_DeliveryBean_array');
 	var JSONArrayShipment = holeArray('Minova_DispoClient_Data_ShipmentBean_array');
 	var keyLong = "KeyLong";
@@ -481,11 +482,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	{
 		if(!tour1ErfassteProdukte)
 		{
-			alert("Sie können noch keine Produkte abladen! Bitte erfassen Sie zuerst welche!");
-			var btnID = "#"+wert.id;
-			$(btnID).removeClass('ui-btn-active');
-			return;
-		//	$.mobile.changePage('#Tour1Page');
+			$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. Bitte erfassen Sie zuerst welche!</div>').trigger('create');
 		}
 		
 		else
@@ -513,11 +510,11 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					{
 						var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
 						$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
+						$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu der Tour</a></li>').trigger('create');
 					}
 				}
 			}
 		}
-		$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu der Tour</a></li>').trigger('create');
 	}
 	
 	if(tourID == 2)

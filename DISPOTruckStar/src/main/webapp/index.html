@@ -5,14 +5,7 @@
         <meta http-equiv="CONTENT-TYPE" content="text/html" charset="UTF-8">
         <link rel="stylesheet" href="jquery.mobile-1.3.2.css"/>
 
-        <script src="jquery-1.9.1.min.js"></script>
-        <script src="jquery.mobile-1.3.2.js"></script>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-        <!-- weitere Scripts -->
-        <script src="scripts/functions.js"></script>
-        <script src="scripts/fillLocalStorage.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         <!-- weitere Styles -->
         <link rel="stylesheet" href="styles/styles.css"/>
@@ -20,27 +13,24 @@
         <!-- Einstellungen zur Definition als WebApp -->
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     </head>
 
     <body id="documentBody" onload="fillLocalStorage()">
         <div data-role="page" id="grundZustandSeitenId">
         
-            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="b">
-                Sie befinden sich derzeit im Grundzustand
+            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="c">
+                Willkommen bei DISPOTruckStar
             </div>
             
-            <div data-role="content">
-                <a href="#startscreen" data-role="button" id="DISPOTruckStar" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">DISPO Truck Star</a>
-                <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="loadLastConfig()" data-theme="e" data-icon="gear" data-iconpos="right" data-inline="">Letzte Konfiguration</a>
-                <a href="#grundZustandSeitenId" rel="external" rel="external" data-role="button" onclick="resetConfig()" data-theme="e" data-icon="gear" data-iconpos="right">Werkeinstellungen</a>
+            <div data-role="content" id="grundZustandInhalt">
+                <a href="#startscreen" data-role="button" id="startButton" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">Start</a>
             </div>
             
-            <div data-role="footer" data-position="fixed" data-theme="c">
+            <div data-role="footer" id="grundZustandFooter" data-position="fixed" data-theme="c">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="plus" data-theme="e">Zoom</a></li>
-                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="gear"data-theme="e">Tools</a></li>
-                        <li><a href="#helpPageId" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Help</a></li>
+                        <li><a href="#helpPageId" id="linkToHelpPage" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Kontakt</a></li>
                     </ul>
                 </div>
             </div>
@@ -105,7 +95,7 @@
             
             <div data-role="content">
                 Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:
-                <h1 id="callNumber">+49(0) 931 / 32235-0</h1>
+                <div id="callNumber">+49 931/32235-0</div>
                 <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur Hauptseite</a>
             </div>
         </div>
@@ -136,7 +126,7 @@
         
        	<div data-role="page" id="anmeldeBildschirm">
 
-            <div data-role="header" data-theme="b">
+            <div data-role="header" data-theme="b" data-position="fixed">
                 DISPO   [ C:DisConnected,EventReset, M:x, R:<span id="indicator">(state unknown)</span>, G:<span id="GPSIndicator">(state unknown)</span> ]
             </div>
 
@@ -319,7 +309,7 @@
 		<div data-role="page" id="KundenLieferAuftraege">
 		
 			<div data-role="header" data-position="fixed" data-theme="b">
-				Lieferaufträege für diesen Kunden
+				Lieferstellen für diese Produkte
 			</div>
 			
 			<div data-role="content" id="KundenLieferAuftraegePageContent"></div>
@@ -392,6 +382,13 @@
 			</div>	-->
 			
 		</div>
-
+		
+		<script src="jquery-1.9.1.min.js"></script>
+        <script src="jquery.mobile-1.3.2.js"></script>
+        
+        <!-- weitere Scripts -->
+        <script src="scripts/functions.js"></script>
+        <script src="scripts/fillLocalStorage.js"></script>
+        
     </body>
 </html>
