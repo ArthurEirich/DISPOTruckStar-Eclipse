@@ -26,9 +26,8 @@
 	
 	#grundZustandInhalt
 	{
-	    /*background: url(../images/dispo.JPG) no-repeat;*/
-	    background: -webkit-linear-gradient(top, rgba(226,226,226,1) 0%,rgba(160,160,157,1) 86%); /* Chrome10+,Safari5.1+ */
-	    /*background-size: 100% 100%;*/
+	    background: url(../images/dispo.JPG) no-repeat;
+	    background-size: 100% 100%;
 	    position : absolute;
    		top      : 20px;
     	right    : 0;
@@ -38,7 +37,6 @@
 	
 	#startButton
 	{
-		background: -webkit-linear-gradient(top, rgba(226,226,226,1) 0%,rgba(160,160,157,1) 86%); /* Chrome10+,Safari5.1+ */
 		position: absolute;
 		left: 15%;
 		top: 5%;
