@@ -3,7 +3,7 @@ function updateStartScreen()
 	var currentVehicleNumber = localStorage.getItem("currentVehicleNumber"); // liest die aktuelle Nummer des Fahrzeugs aus Local Storage
 	if(!currentVehicleNumber) // wenn dazu kein Eintrag existiert
 	{
-		document.getElementById('vehicleNumber').innerHTML = "Es wurde bisher kein Fahrzeug ausgewählt"; // wird diese Meldung ausgegeben
+		document.getElementById('vehicleNumber').innerHTML = "kein Fahrzeug ausgewählt"; // wird diese Meldung ausgegeben
 	}
 	else // wenn es existiert
 	{

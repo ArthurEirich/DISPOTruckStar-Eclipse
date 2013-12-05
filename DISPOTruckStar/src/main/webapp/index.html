@@ -1,11 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="de-DE" manifest="DISPOTruckStar.manifest">
+<html lang="de-DE"> <!-- manifest="DISPOTruckStar.manifest" -- UNBEDINGT WIEDER EINSCHALTEN!!!!!!!!!!! -->
 	<head>
         <title>DISPO Truck Star</title>
         <meta http-equiv="CONTENT-TYPE" content="text/html" charset="UTF-8">
         <link rel="stylesheet" href="jquery.mobile-1.3.2.css"/>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>	
+		<script src="jquery-1.9.1.min.js"></script>
+        <script src="jquery.mobile-1.3.2.js"></script>
+        
+        <!-- weitere Scripts -->
+        <script src="scripts/functions.js"></script>
+        <script src="scripts/fillLocalStorage.js"></script>
 
         <!-- weitere Styles -->
         <link rel="stylesheet" href="styles/styles.css"/>
@@ -16,15 +22,15 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     </head>
 
-    <body id="documentBody" onload="fillLocalStorage()">
+    <body id="documentBody" class="documentBody" onload="fillLocalStorage()">
         <div data-role="page" id="grundZustandSeitenId">
         
-            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="c">
+            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="a">
                 Willkommen bei DISPOTruckStar
             </div>
             
             <div data-role="content" id="grundZustandInhalt">
-                <a href="#startscreen" data-role="button" id="startButton" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">Start the app</a>
+                <a href="#startscreen" data-role="button" id="startButton" class="startAppButton" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">Start the app</a>
             </div>
             
             <div data-role="footer" id="grundZustandFooter" data-position="fixed" data-theme="c">
@@ -38,50 +44,43 @@
         </div>
         
         <div data-role="page" id="startscreen">
+        
 
             <div data-role="header" data-theme="b">
-                DISPO   [ C:DisConnected,EventReset, M:x, R:<span id="indicator">(state unknown)</span>, G:<span id="GPSIndicator">(state unknown)</span> ]
+                DISPO   [ R:<span id="indicator">unknown</span>, G:<span id="GPSIndicator">unknown</span> ]
             </div>
 
-            <div data-role="content">
-                <div>
-                    <b>Fahrzeugnummer:    <span id="vehicleNumber">wird aus der DB ausgelesen</span></b>
-                </div>
-
-                <div>
-                    <b>Funk:      <span id="indicatorFunk">(state unknown)</span></b>
-                </div>
-
-                <div>
-                    <b>Anzahl offener Touren:  <span id="anzahlTouren">(wird aus der DB ausgelesen)</span></b>
-                </div>
-
-                <div>
-                    <b>Version:    <span id="nightlyVersion">(kommt aus local storage)</span></b>
-                </div>
-
-                <div>
-                    <b>Datum:
-                        <script type="text/javascript">
-                            var today = new Date();
-                            var dd = today.getDate();
-                            var mm = today.getMonth()+1; //January is 0!
-
-                            var yyyy = today.getFullYear();
-                            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'-'+mm+'-'+yyyy;
-                            document.write(today.toString());
-                        </script>
-                    </b>
-                </div>
+            <div data-role="content" id="startScreenContent">
+                
+				<div class="ui-grid-a">
+					<div class="ui-block-a">Fahrzeugnummer</div>				
+					<div class="ui-block-b"><b><span id="vehicleNumber">wird aus der DB ausgelesen</span></b></div>				
+					<div class="ui-block-a">Funk</div>				
+					<div class="ui-block-b"><b><span id="indicatorFunk">unknown</span></b></div>				
+					<div class="ui-block-a">Offene Touren</div>				
+					<div class="ui-block-b"><b><span id="anzahlTouren">(wird aus der DB ausgelesen)</span></b></div>				
+					<div class="ui-block-a">Version</div>				
+					<div class="ui-block-b"><b><span id="nightlyVersion">(kommt aus local storage)</span></b></div>				
+					<div class="ui-block-a">Datum</div>				
+					<div class="ui-block-b"><b><span id="currentDate"><script type="text/javascript">
+									                            var today = new Date();
+									                            var dd = today.getDate();
+									                            var mm = today.getMonth()+1; //January is 0!
+									
+									                            var yyyy = today.getFullYear();
+									                            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'-'+mm+'-'+yyyy;
+									                            document.write(today.toString());
+				               	</script></span></b></div>				
+				</div>
+				
             </div>
 
             <div data-role="footer" data-position="fixed" data-theme="c">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="delete" data-theme="e">Beenden</a></li>
-                        <li><a href="#meldungenPage" rel="external" data-role="button" data-icon="info" data-theme="e" data-rel="dialog" data-transition="pop" >Meldungen</a></li>
-                        <li><a href="#servicePage" rel="external" data-role="button" data-icon="gear" data-theme="e">Service</a></li>
-                        <li><a href="#anmeldeBildschirm" rel="external" data-role="button" onclick="updateAnmeldeBildschirm()" data-icon="arrow-r" data-theme="e">Weiter zur Fahreranmeldung</a></li>
+                        <li><a href="#grundZustandSeitenId" data-role="button" data-icon="delete" data-theme="e">Beenden</a></li>
+                        <li><a href="#meldungenPage" data-role="button" data-icon="info" data-theme="e" data-rel="dialog" data-transition="pop">Meldungen</a></li>
+                        <li><a href="#anmeldeBildschirm" data-role="button" onclick="updateAnmeldeBildschirm()" data-icon="arrow-r" data-theme="e">Anmeldung</a></li>
                     </ul>
                 </div>
             </div>
@@ -127,32 +126,32 @@
        	<div data-role="page" id="anmeldeBildschirm">
 
             <div data-role="header" data-theme="b" data-position="fixed">
-                DISPO   [ C:DisConnected,EventReset, M:x, R:<span id="indicator">(state unknown)</span>, G:<span id="GPSIndicator">(state unknown)</span> ]
+                DISPO   [ R:<span id="indicator">unknown</span>, G:<span id="GPSIndicator">unknown</span> ]
             </div>
 
-            <div data-role="content">
+            <div data-role="content" id="anmeldeBildschrimInhalt">
 
                 <div data-role="fieldcontain">
-                    <h3><label for="FahrerAuswahl" class="select">Fahrer:</label></h3>
+                    <label for="FahrerAuswahl" class="select">Fahrer:</label>
                     <select name="FahrerAuswahl" id="FahrerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
                 <div data-role="fieldcontain">
-                    <h3><label for="password">PIN:</label></h3>
-                    <input type="password" name="password" id="password" value="" data-clear-btn="true"/>
-                </div>
+    				<label for="password">PIN:</label>
+    				<input type="password" name="password" id="password" value="" data-clear-btn="true" />
+				</div>
 
                 <div data-role="fieldcontain">
-                    <h3><label for="AufliegerAuswahl" class="select">Auflieger:</label></h3>
+                    <label for="AufliegerAuswahl" class="select">Auflieger:</label>
                     <select name="AufliegerAuswahl" id="AufliegerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
-	            <div data-role="footer" data-position="fixed" data-theme="e">
+	            <div data-role="footer" id="anmeldeBildschirmFooter" data-position="fixed" data-theme="e" data-tap-toggle="false">
 	                <div data-role="navbar">
 	                    <ul>
-	                        <li><a href="#startscreen" data-role="button" data-icon="back" data-theme="e" >Zurück zum DISPO Truck Star</a></li>
+	                        <li><a href="#startscreen" data-role="button" data-icon="back" data-theme="e" >Zum Start</a></li>
 	                        <li><a href="#changePass"  data-role="button" data-rel="dialog" data-icon="refresh" data-theme="e">PIN ändern</a></li>
-	                        <li><a rel="external" data-role="button" id="anmeldeBildschirmConfirmButton" onclick="setCurrentDriverData()" data-icon="arrow-r" data-theme="e">Bestätigung und weiter zu den Touren</a></li>
+	                        <li><a rel="external" data-role="button" id="anmeldeBildschirmConfirmButton" onclick="setCurrentDriverData()" data-icon="arrow-r" data-theme="e">Touren</a></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -198,8 +197,8 @@
 			
 			<div data-role="content" id="TourenPageContent">
 				<div data-role="controlgroup" id="TourenPageContentControlgroup">
-					<li><a href="#Tour1Page" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
-					<li><a href="#Tour2Page" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
+					<li><a href="#Tour1Page" class="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
+					<li><a href="#Tour2Page" class="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
 				</div>
 			</div>
 			
@@ -383,12 +382,6 @@
 			
 		</div>
 		
-		<script src="jquery-1.9.1.min.js"></script>
-        <script src="jquery.mobile-1.3.2.js"></script>
-        
-        <!-- weitere Scripts -->
-        <script src="scripts/functions.js"></script>
-        <script src="scripts/fillLocalStorage.js"></script>
         
     </body>
 </html>
