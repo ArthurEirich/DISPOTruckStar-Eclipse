@@ -75,7 +75,7 @@ function setAnzahlTouren() // berechnet die Länge des Tourenarrays
 }
 
 
-function setCurrentDriverData() // Einlesen des ausgewählten Fahrers, eingegebenen Passworts und der Fahrzeugnummer 
+function setCurrentDriverDataAndMoveToTouren() // Einlesen des ausgewählten Fahrers, eingegebenen Passworts und der Fahrzeugnummer 
 {
 	var currentDriver = String($('#FahrerAuswahl option:selected').text()); 
 	var driverPassword = String($('#password').val());
@@ -129,6 +129,7 @@ function getDriversFromLocalStorage() // Parsen aller Fahrer aus dem Array mit J
 		var innerJSONObject = JSONArray[i];
 		fahrerArray[i] = innerJSONObject[text];
 	}
+	fahrerArray.sort();
 	return fahrerArray; // und Rückgabe als ein ganz normaler Array
 }
 
@@ -143,7 +144,7 @@ function setDriverSelectionMenu() // setzt die Fahrerauswahl
 	{
 		if(!driverSelectMenu) // wenn der Inhalt des Auswahlmenüs leer ist
 		{
-			$('#FahrerAuswahl').append('<option value='+fahrerArray[i]+'>'+fahrerArray[i]+'</option>'); // wird es in dieser Schleige erzeugt
+			$('#FahrerAuswahl').append('<option value='+fahrerArray[i]+'>'+fahrerArray[i]+'</option>'); // wird es in dieser Schleife erzeugt
 			if(currentDriver == fahrerArray[i]) // wenn der aktuelle Fahrer mit dem aus dem Array übereinstimmt
 			{
 				selectedIndex = i; // wird dieser Index als "ausgewählt" gesetzt
@@ -172,6 +173,7 @@ function getVehiclesFromLocalStorage() // Parsen aller Fahrzeugnummern aus dem A
 		var innerJSONObject = JSONArray[i];
 		vehicleArray[i] = innerJSONObject[text];
 	}
+	vehicleArray.sort();
 	return vehicleArray; // und Rückgabe derer als ein normaler Array
 }
 
@@ -210,6 +212,14 @@ function updateAnmeldeBildschirm()
 	setVehicleSelectionMenu(); // und des Fahrzeugs
 }
 
+function prepareChangePassDialog()
+{
+	$('#oldPassword').val('');
+	$('#newPassword').val('');
+	$('#confirmNewPassword').val('');
+	$('#changePassword').removeClass('ui-btn-active');
+}
+
 function changePassword() // Diese Methode dient zur Passwortänderung
 {
 	var oldPassInDialog = $('#oldPassword').val(); // Das in dem Popup-Dialog eingegebene alte Passwort
@@ -222,15 +232,17 @@ function changePassword() // Diese Methode dient zur Passwortänderung
 	{
 		localStorage.setItem('driverPassword', newPassword); // wird das Passwort auf das neue geändert und im Local Storage gespeichert
 		changeDriverPassInTable(newPassword); // Das neue Passwort auch in der Fahrertabelle ändern; diese befindet sich im Local Storage als ein JSONArray gespeichert
+	//	$('#changePassword').addClass('ui-btn-active');
 		alert("Ihr Passwort wurde erfolgreich geändert!"); // Feedback für den Benutzer, dass die Aktion erfolgreich war
-		$.mobile.changePage('#anmeldeBildschirm'); // Weiterleitung zu der Fahreranmeldeseite 
+		$.mobile.changePage('#anmeldeBildschirm'); // Weiterleitung zu der Fahreranmeldeseite
+		
 	}
 	if(newPassword != confirmNewPassword) // Wenn die beiden neuen Passwörter ungleich sind
 	{
 		// wird die entsprechende Meldung ausgegeben, der Nutzer aufgefordert, beide Passwörter korrekt einzugeben und
 		alert("Das neue Passwort und die Passwortbestätigung stimmen nicht überein! Versuchen Sie es bitte erneut!");
-		var newPassword = $('#newPassword').val('');
-		var confirmNewPassword = $('#confirmNewPassword').val('');
+		$('#newPassword').val('');
+		$('#confirmNewPassword').val('');
 	}
 }
 
@@ -279,10 +291,8 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 			if(innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 			{
 				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
-				$('#Tour1PageContent').append('<div><b>' + touren[tourID-1] + '</b></div>');
-				$('#Tour1PageContent').append('<div><b>Ort: ' + innerJSONObjectDepot[city] + '</b></div>');
-				$('#Tour1PageContent').append('<div><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
-				$('#Tour1PageContent').append('<div><b>Tel.: '+innerJSONObjectDepot[phone]+'<br></b></div>');
+				$('#Tour1PageContent').append('<div id="tour1PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
+				$('#Tour1PageContent').append('<div id="tour1PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'<br></b></div>');
 				$('#Tour1PageContent').append('<div id="LadeauftraegeTour1">Ladeaufträge für diese Tour:<br></div>');
 				$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Produkte"></div>');
 				$('#Tour1PageContent').append('<div id="LieferauftraegeTour1">Lieferaufträge für diese Tour:<br></div>');
@@ -329,12 +339,11 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 			if(innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 			{
 				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
-				$('#Tour2PageContent').append('<div><b>' + touren[tourID-1] + '</b></div>');
-				$('#Tour2PageContent').append('<div><b>Ort: ' + innerJSONObjectDepot[city] + '</b></div>');
-				$('#Tour2PageContent').append('<div><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
-				$('#Tour2PageContent').append('<div><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
+				$('#Tour2PageContent').append('<div id="tour2PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
+				$('#Tour2PageContent').append('<div id="tour2PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
 				$('#Tour2PageContent').append('<div id="LadeauftraegeTour2">Ladeaufträge für diese Tour:<br></div>');
 				$('#Tour2PageContent').append('<div data-role="controlgroup" id="Tour2Produkte"></div>');
+				$('#Tour2PageContent').append('<div id="LieferauftraegeTour2">Lieferaufträge für diese Tour:<br></div>');
 				$('#Tour2PageContent').append('<div id="Tour2Kunden"></div>');
 			}
 			
@@ -351,15 +360,16 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 					$('#Tour2Produkte').append(produktTypButton).trigger('create');
 				}
 			}
-			
-			/*
-			 * 
-			 * 
-			  TODO Tour2Kunden Buttons implementieren und danach den Inhalt der Methode adjustKundenLieferAuftraege anpassen
-			 * 
-			 * 
-			 */
-			
+
+			for(var z=0; z<JSONArrayDelivery.length; z++)
+			{
+				var innerJSONObjectDelivery = JSONArrayDelivery[z];
+				if(innerJSONObjectDelivery[tripKey] === "4776" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == ""))
+				{
+					var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
+					$('#Tour2Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
+				}
+			}
 		}
 	}
 } // end function
@@ -482,11 +492,17 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	{
 		if(!tour1ErfassteProdukte)
 		{
-			$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. Bitte erfassen Sie zuerst welche!</div>').trigger('create');
+			if(document.getElementById('keineLieferAuftraegeFooterButton') == null && document.getElementById('keineLieferAuftraegeMeldung') == null)
+			{
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. Bitte erfassen Sie zuerst welche!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" id="keineLieferAuftraegeFooterButton" data-role="button" data-icon="back" data-theme="e">Zurück zur Tour</a></li>').trigger('create');
+			}
 		}
 		
 		else
 		{
+			$('#keineLieferAuftraegeMeldung').remove();
+			$('#keineLieferAuftraegeFooterButton').remove();
 			for(var i=0; i<JSONArrayDelivery.length; i++)
 			{
 				var innerJSONObjectDelivery = JSONArrayDelivery[i];
@@ -519,7 +535,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	
 	if(tourID == 2)
 	{
-		/**************************************Hier ähnlicher Code wie für ID = 1****************************************/
+		/**************************************Hier ähnlicher Code wie für ID = 2****************************************/
 	}
 }
 

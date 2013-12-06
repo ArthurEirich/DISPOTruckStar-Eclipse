@@ -5,7 +5,7 @@
         <meta http-equiv="CONTENT-TYPE" content="text/html" charset="UTF-8">
         <link rel="stylesheet" href="jquery.mobile-1.3.2.css"/>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>	
+        <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no"/>	
 		<script src="jquery-1.9.1.min.js"></script>
         <script src="jquery.mobile-1.3.2.js"></script>
         
@@ -95,7 +95,7 @@
             <div data-role="content">
                 Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:
                 <div id="callNumber">+49 931/32235-0</div>
-                <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur Hauptseite</a>
+                <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zur Hauptseite</a>
             </div>
         </div>
         
@@ -107,22 +107,10 @@
 	        
 	        <div data-role="content">
 	            Hier erscheinen später die Anmerkungen zu der jeweiligen Tour
-	            <a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur DISPO Truck Star</a>
+	            <a href="#startscreen" data-role="button" data-icon="back" data-theme="e">Zur DISPO Truck Star</a>
 	        </div>
     	</div>
     	
-    	<div data-role="page" id="servicePage">
-    	
-    		<div data-role="header" data-theme="e">
-	            <h1>Service</h1>
-	        </div>
-	        
-	        <div data-role="content">
-				Wir bieten ausgezeichneten Service und Support!!!
-				<a href="#startscreen" rel="external" data-role="button" data-icon="back" data-theme="e">Zurück zur DISPO Truck Star</a>
-			</div>
-        </div>
-        
        	<div data-role="page" id="anmeldeBildschirm">
 
             <div data-role="header" data-theme="b" data-position="fixed">
@@ -136,7 +124,7 @@
                     <select name="FahrerAuswahl" id="FahrerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
-                <div data-role="fieldcontain">
+                <div data-role="fieldcontain" id="PINLabel">
     				<label for="password">PIN:</label>
     				<input type="password" name="password" id="password" value="" data-clear-btn="true" />
 				</div>
@@ -150,8 +138,8 @@
 	                <div data-role="navbar">
 	                    <ul>
 	                        <li><a href="#startscreen" data-role="button" data-icon="back" data-theme="e" >Zum Start</a></li>
-	                        <li><a href="#changePass"  data-role="button" data-rel="dialog" data-icon="refresh" data-theme="e">PIN ändern</a></li>
-	                        <li><a rel="external" data-role="button" id="anmeldeBildschirmConfirmButton" onclick="setCurrentDriverData()" data-icon="arrow-r" data-theme="e">Touren</a></li>
+	                        <li><a href="#changePass"  data-role="button" onclick="prepareChangePassDialog()" data-rel="dialog" data-icon="refresh" data-theme="e">PIN ändern</a></li>
+	                        <li><a data-role="button" id="zuDenTourenButton" onclick="setCurrentDriverDataAndMoveToTouren()" data-icon="arrow-r" data-theme="e">Touren</a></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -162,7 +150,7 @@
 		<div data-role="page" id="changePass">
 
             <div data-role="header" data-theme="e">
-                <h1>Passwort ändern</h1>
+                <h3>PIN ändern</h3>
             </div>
 
             <div data-role="content">
@@ -178,13 +166,13 @@
                 </div>
 
                 <div data-role="fieldcontain">
-                    <label for="confirmNewPassword">Bestätigung:</label>
+                    <label for="confirmNewPassword">Wieder- <br>holung:</label>
                     <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
                 </div>
 
-                <a href="#anmeldeBildschirm" data-role="button" data-theme="e" data-inline="true" data-icon="delete">Abbrechen</a>
-                <a data-role="button" id="changePassword" onclick="changePassword()" data-inline="true"
-                                data-theme="c" data-icon="check" data-iconpos="right">Passwort ändern</a>
+                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="e" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="top">Abbrechen</a>
+                <div data-role="button" id="changePassword" onclick="changePassword()" data-inline="true" data-mini="true"
+                                data-theme="b" data-icon="check" data-iconpos="top">Bestätigen</div>
             </div>
 
 		</div>
@@ -205,8 +193,8 @@
 			<div data-role="footer" data-position="fixed" data-theme="e">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#anmeldeBildschirm" rel="external" data-role="button" onclick="updateAnmeldebildschirm()" data-icon="back" data-theme="e" >Zurück zur Anmeldung</a></li>
-                        <li><a href="#" rel="external" data-role="button" data-icon="alert" data-theme="e">Notiz</a></li>
+                        <li><a href="#anmeldeBildschirm" data-role="button" data-icon="back" data-theme="e" >Zur Anmeldung</a></li>
+                        <li><a href="#" data-role="button" data-icon="alert" data-theme="e">Notiz</a></li>
                     </ul>
                 </div>
             </div>
@@ -216,7 +204,7 @@
 		<div data-role="page" id="Tour1Page">
 		
 			<div data-role="header" data-position="fixed" data-theme="b">
-				Tour 1
+				Do 4771 - Donnerstag
 			</div>
 			
 			<div data-role="content" id="Tour1PageContent"></div>
@@ -234,7 +222,7 @@
 		<div data-role="page" id="Tour2Page">
 		
 			<div data-role="header" data-position="fixed" data-theme="b">
-				Tour 2
+				Do 4776 - Donnerstag
 			</div>
 			
 			<div data-role="content" id="Tour2PageContent"></div>
@@ -257,7 +245,7 @@
 			
 			<div data-role="content">
 			
-				<div>Produkt:<b><span id="ProduktTypErfassung">unknown</span></b></div>
+				<div><b><span id="ProduktTypErfassung">unknown</span></b></div>
 			
 				<div data-role="fieldcontain">
 		            <label for="Liter15Grad">Liter 15°C:</label>
@@ -266,12 +254,12 @@
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Dichte">Dichte:</label>
-		            <input type="number" min="500" max="1000" name="Dichte" id="Dichte" value="" placeholder="Dichte" data-clear-btn="true"/>
+		            <input type="number" step="0.01" min="500" max="1000" name="Dichte" id="Dichte" value="" placeholder="Dichte" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
 		            <label for="Nr">Nr.:</label>
-		            <input type="number" name="Nr" id="Nr" value="" placeholder="Nummer des Ladenscheins" data-clear-btn="true"/>
+		            <input type="number" name="Nr" id="Nr" value="" placeholder="Nummer des Ladescheins" data-clear-btn="true"/>
 	            </div>
 	            
 	            <div data-role="fieldcontain">
