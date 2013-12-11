@@ -185,8 +185,8 @@
 			
 			<div data-role="content" id="TourenPageContent">
 				<div data-role="controlgroup" id="TourenPageContentControlgroup">
-					<li><a href="#Tour1Page" class="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a></li>
-					<li><a href="#Tour2Page" class="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a></li>
+					<a href="#Tour1Page" class="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
+					<a href="#Tour2Page" class="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
 				</div>
 			</div>
 			
@@ -230,7 +230,7 @@
 			<div data-role="footer" data-position="fixed" data-theme="e">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu den Touren</a></li>
+                        <li><a href="#Touren" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu den Touren</a></li>
                     </ul>
                 </div>
             </div>
@@ -299,11 +299,14 @@
 				Lieferstellen für diese Produkte
 			</div>
 			
-			<div data-role="content" id="KundenLieferAuftraegePageContent"></div>
+			<div data-role="content">
+				<div data-role="controlgroup" id="KundenLieferAuftraegePageContent"></div>
+			</div>
 			
 			<div data-role="footer" data-position="fixed" data-theme="e">
 				<div data-role="navbar">
 					<ul id="KundenLieferAuftraegePageFooter">
+						<li><a data-role="button" id="KundenLieferAuftraegePageFooterButton" data-icon="back" data-iconpos="left" data-theme="e">Zurück</a></li>
 					</ul>
 				</div>
 			</div>

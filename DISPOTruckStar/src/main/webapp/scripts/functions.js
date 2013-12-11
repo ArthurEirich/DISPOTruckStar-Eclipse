@@ -13,16 +13,6 @@ function updateStartScreen()
 	setAnzahlTouren();
 }
 
-function loadLastConfig()
-{
-    alert("Load last config should be implemented!");
-}
-
-function resetConfig()
-{
-    alert("Reset Config should be implemented!!!");
-}
-
 function updateIndicator() // prüft, ob Navigationshardware an oder aus ist
 {
 	// und setzt die entsprechenden Werte ein
@@ -475,6 +465,9 @@ function adjustErfassungPage(wert, tourID)
 
 function adjustKundenLieferAuftraege(wert, tourID)
 {
+	$('#KundenLieferAuftraegePageContent').empty();
+	$('#KundenLieferAuftraegePageContent').empty();
+	
 	var tour1ErfassteProdukte = localStorage.getItem('Tour 1-Erfasste Produkte');
 	var tour2ErfassteProdukte = localStorage.getItem('Tour 2-Erfasste Produkte');
 	var kundenLieferAuftraegePageContent = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
@@ -492,50 +485,112 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	{
 		if(!tour1ErfassteProdukte)
 		{
-			if(document.getElementById('keineLieferAuftraegeFooterButton') == null && document.getElementById('keineLieferAuftraegeMeldung') == null)
+			if(document.getElementById('keineLieferAuftraegeMeldung') == null)
 			{
-				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. Bitte erfassen Sie zuerst welche!</div>').trigger('create');
-				$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" id="keineLieferAuftraegeFooterButton" data-role="button" data-icon="back" data-theme="e">Zurück zur Tour</a></li>').trigger('create');
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. <br>Bitte erfassen Sie zuerst welche!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour1Page');
 			}
 		}
 		
 		else
 		{
-			$('#keineLieferAuftraegeMeldung').remove();
-			$('#keineLieferAuftraegeFooterButton').remove();
-			for(var i=0; i<JSONArrayDelivery.length; i++)
+			tour1ErfassteProdukte = JSON.parse(tour1ErfassteProdukte);
+			var anzahlZuErfassendeProdukteTour1 = $('#Tour1Produkte a').length;
+			if(tour1ErfassteProdukte.length == anzahlZuErfassendeProdukteTour1)
 			{
-				var innerJSONObjectDelivery = JSONArrayDelivery[i];
-				if(innerJSONObjectDelivery[text] == wert.id)
+				for(var i=0; i<JSONArrayDelivery.length; i++)
 				{
-					keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
-					keyLongArray.push(keyLongValue);
-				}
-				if(keyLongValue == innerJSONObjectDelivery[deliveryKey])
-				{
-					keyLongArray.push(innerJSONObjectDelivery[keyLong]);
-				}
-			}
-			
-			for(var y=0; y<JSONArrayShipment.length; y++)
-			{
-				var innerJSONObjectShipment = JSONArrayShipment[y];
-				for(var z=0; z<keyLongArray.length; z++)
-				{
-					if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
+					var innerJSONObjectDelivery = JSONArrayDelivery[i];
+					if(innerJSONObjectDelivery[text] == wert.id)
 					{
-						var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
-						$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
-						$('#KundenLieferAuftraegePageFooter').append('<li><a href="#Tour1Page" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu der Tour</a></li>').trigger('create');
+						keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
+						keyLongArray.push(keyLongValue);
+					}
+					
+					if(keyLongValue == innerJSONObjectDelivery[deliveryKey])
+					{
+						keyLongArray.push(innerJSONObjectDelivery[keyLong]);
 					}
 				}
+				
+				for(var y=0; y<JSONArrayShipment.length; y++)
+				{
+					var innerJSONObjectShipment = JSONArrayShipment[y];
+					for(var z=0; z<keyLongArray.length; z++)
+					{
+						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
+						{
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" class="lieferungAbladeButton" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
+							/* --------------------- Implementiere noch die jeweiligen Kundeninfos, an die die Produkte geliefert werden -------------------------*/
+						}
+					}
+				}
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour1Page');
+			}
+			
+			else
+			{
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Sie haben nicht alle Produkte erfasst!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour1Page');
 			}
 		}
 	}
 	
 	if(tourID == 2)
 	{
-		/**************************************Hier ähnlicher Code wie für ID = 2****************************************/
+		if(!tour2ErfassteProdukte)
+		{
+			if(document.getElementById('keineLieferAuftraegeMeldung') == null)
+			{
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. <br>Bitte erfassen Sie zuerst welche!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour2Page');
+			}
+		}
+		
+		else
+		{
+			tour2ErfassteProdukte = JSON.parse(tour2ErfassteProdukte);
+			var anzahlZuErfassendeProdukteTour2 = $('#Tour2Produkte a').length;
+			if(tour2ErfassteProdukte.length == anzahlZuErfassendeProdukteTour2)
+			{
+				for(var i=0; i<JSONArrayDelivery.length; i++)
+				{
+					var innerJSONObjectDelivery = JSONArrayDelivery[i];
+					if(innerJSONObjectDelivery[text] == wert.id)
+					{
+						keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
+						keyLongArray.push(keyLongValue);
+					}
+					
+					if(keyLongValue == innerJSONObjectDelivery[deliveryKey])
+					{
+						keyLongArray.push(innerJSONObjectDelivery[keyLong]);
+					}
+				}
+				
+				for(var y=0; y<JSONArrayShipment.length; y++)
+				{
+					var innerJSONObjectShipment = JSONArrayShipment[y];
+					for(var z=0; z<keyLongArray.length; z++)
+					{
+						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
+						{
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" class="lieferungAbladeButton" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
+							/* --------------------- Implementiere noch die jeweiligen Kundeninfos, an die die Produkte geliefert werden -------------------------*/
+						}
+					}
+				}
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour2Page');
+			}
+			
+			else
+			{
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Sie haben nicht alle Produkte erfasst!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour2Page');
+			}
+		}
 	}
 }
 

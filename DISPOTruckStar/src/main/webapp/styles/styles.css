@@ -138,6 +138,27 @@
     	font-size	: 20px;
 	}
 	/* ----------------------------------------- Ende der Anpassungen für die Produkterfassungsmaske ---------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die KundenlieferAuftraegeseite --------------------------------- */
+	#keineLieferAuftraegeMeldung
+	{
+		font-size : 48px;
+	}
+	
+	#KundenLieferAuftraegePageContent
+	{
+		position : absolute;
+		top		 : 20%;
+		width	 : 97%;
+	}
+	
+	.lieferungAbladeButton
+	{
+		height 	 : 60px;
+	}
+	
+	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:30px;}
+	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
 }
 
 /* ---------------------------------------------------------------------------------------------------------- iPad (any) Portrait ------------------------------------------------------------------------------- */
@@ -243,7 +264,7 @@
 	
 	.Tour1Link, .Tour2Link
 	{
-    	height 		: 70px;
+    	height 	 : 70px;
 	}
 	
 	.Tour1Link .ui-btn-inner .ui-btn-text, .Tour2Link .ui-btn-inner .ui-btn-text{font-size:40px;}
@@ -263,6 +284,27 @@
     	font-size	: 20px;
 	}
 	/* ----------------------------------------- Ende der Anpassungen für die Produkterfassungsmaske ---------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die KundenlieferAuftraegeseite --------------------------------- */
+	#keineLieferAuftraegeMeldung
+	{
+		font-size : 48px;
+	}
+	
+	#KundenLieferAuftraegePageContent
+	{
+		position : absolute;
+		top		 : 20%;
+		width	 : 97%;
+	}
+	
+	.lieferungAbladeButton
+	{
+		height 	 : 60px;
+	}
+	
+	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:30px;}
+	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
 }
 
 /* ----------------------------------------------------------------------------------------- iPhone (any) portrait  -------------------------------------------------------------------------- */
