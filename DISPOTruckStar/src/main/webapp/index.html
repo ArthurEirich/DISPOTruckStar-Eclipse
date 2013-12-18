@@ -36,7 +36,7 @@
             <div data-role="footer" id="grundZustandFooter" data-position="fixed" data-theme="c">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#helpPageId" id="linkToHelpPage" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Kontakt</a></li>
+                        <li><a href="#Kontakt" id="linkToHelpPage" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Kontakt</a></li>
                     </ul>
                 </div>
             </div>
@@ -86,14 +86,14 @@
             </div>
         </div>
         
-        <div data-role="page" id="helpPageId">
+        <div data-role="page" id="Kontakt">
         
             <div data-role="header" data-theme="e">
-                <h1>Help</h1>
+                Kontakt
             </div>
             
             <div data-role="content">
-                Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:
+                <div class="KontaktContentText">Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:</div>
                 <div id="callNumber">+49 931/32235-0</div>
                 <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zur Hauptseite</a>
             </div>
@@ -102,11 +102,11 @@
         <div data-role="page" id="meldungenPage">
         
 	        <div data-role="header" data-theme="e">
-	            <h1>Meldungen</h1>
+	            Meldungen
 	        </div>
 	        
 	        <div data-role="content">
-	            Hier erscheinen später die Anmerkungen zu der jeweiligen Tour
+	            <div class="meldungenPageContentText">Hier erscheinen später die Anmerkungen zu der jeweiligen Tour<br>(momentan im Offline-Modus nicht möglich)</div>
 	            <a href="#startscreen" data-role="button" data-icon="back" data-theme="e">Zur DISPO Truck Star</a>
 	        </div>
     	</div>
@@ -150,7 +150,7 @@
 		<div data-role="page" id="changePass">
 
             <div data-role="header" data-theme="e">
-                <h3>PIN ändern</h3>
+                PIN ändern
             </div>
 
             <div data-role="content">
@@ -170,9 +170,9 @@
                     <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
                 </div>
 
-                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="e" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="top">Abbrechen</a>
+                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="c" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="left">Abbrechen</a>
                 <div data-role="button" id="changePassword" onclick="changePassword()" data-inline="true" data-mini="true"
-                                data-theme="b" data-icon="check" data-iconpos="top">Bestätigen</div>
+                                data-theme="e" data-icon="check" data-iconpos="right">Bestätigen</div>
             </div>
 
 		</div>
@@ -185,8 +185,8 @@
 			
 			<div data-role="content" id="TourenPageContent">
 				<div data-role="controlgroup" id="TourenPageContentControlgroup">
-					<a href="#Tour1Page" class="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
-					<a href="#Tour2Page" class="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
+					<a href="#Tour1Page" id="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
+					<a href="#Tour2Page" id="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
 				</div>
 			</div>
 			
@@ -194,11 +194,26 @@
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#anmeldeBildschirm" data-role="button" data-icon="back" data-theme="e" >Zur Anmeldung</a></li>
-                        <li><a href="#" data-role="button" data-icon="alert" data-theme="e">Notiz</a></li>
+                        <li><a href="#notiz" data-role="button" data-rel="dialog" data-icon="alert" data-theme="e">Notiz</a></li>
                     </ul>
                 </div>
             </div>
             	
+		</div>
+		
+		<div data-role="page" id="notiz">
+			
+			<div data-role="header" data-theme="e">
+                Notizen
+            </div>
+			
+			<div data-role="content">
+			
+				<div class="notizContentText">Hier können Sie wichtige Zusatzinformationen zu der Tour einlesen</div>
+				<a href="#Touren" data-role="button" data-theme="e" data-icon="delete" >Zu den Touren</a>
+				
+			</div>
+			
 		</div>
 		
 		<div data-role="page" id="Tour1Page">
@@ -323,7 +338,7 @@
 			
 			<div data-role="content">
 			
-				<div>Produkt:<b><span id="ProduktTypAbladung">unknown</span></b></div>
+				<div><b><span id="ProduktTypAbladung">unknown</span></b></div>
 				
 				<div data-role="fieldcontain">
 		            <label for="Abgabemenge">Abgabemenge:</label>
@@ -342,7 +357,7 @@
 		            <input type="number" name="Vorpeilung" id="Vorpeilung" value="" placeholder="Vorpeilung" data-clear-btn="true"/>
 	            </div>
 	            
-	            <div id="GESAMTAngabe"></div> 
+	            <div id="GESAMTAngabe">Gesamt: <span id="gesamtAngabe">0</span></div> 
 	            
 	            <div id="NachpeilungUndPumpenstandContainer"> <!-- Dieser Container wird je nach Produktart ein- oder ausgeblendet -->
 	            
@@ -364,12 +379,12 @@
 				
 			</div>
 			
-	<!--  		<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed" data-theme="e">
 				<div data-role="navbar">
 					<ul id="ProduktAbladungPageFooter">
 					</ul>
 				</div>
-			</div>	-->
+			</div>
 			
 		</div>
 		

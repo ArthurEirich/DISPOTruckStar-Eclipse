@@ -1,13 +1,13 @@
 function updateStartScreen() 
 {
-	var currentVehicleNumber = localStorage.getItem("currentVehicleNumber"); // liest die aktuelle Nummer des Fahrzeugs aus Local Storage
-	if(!currentVehicleNumber) // wenn dazu kein Eintrag existiert
+	var currentVehicleNumber = localStorage.getItem("currentVehicleNumber");
+	if(!currentVehicleNumber)
 	{
-		document.getElementById('vehicleNumber').innerHTML = "kein Fahrzeug ausgewählt"; // wird diese Meldung ausgegeben
+		document.getElementById('vehicleNumber').innerHTML = "kein Fahrzeug ausgewählt";
 	}
-	else // wenn es existiert
+	else
 	{
-		document.getElementById('vehicleNumber').innerHTML = currentVehicleNumber; // wird es auch angezeigt
+		document.getElementById('vehicleNumber').innerHTML = currentVehicleNumber;
 	}
 	setVersion();
 	setAnzahlTouren();
@@ -15,10 +15,25 @@ function updateStartScreen()
 
 function updateIndicator() // prüft, ob Navigationshardware an oder aus ist
 {
-	// und setzt die entsprechenden Werte ein
     document.getElementById('indicator').innerHTML = navigator.onLine ? 'OK' : 'X';
     document.getElementById('indicatorFunk').innerHTML = navigator.onLine ? 'Verbunden' : 'offline';
     document.getElementById('GPSIndicator').innerHTML = navigator.geolocation ? 'OK' : 'X';
+}
+
+function getCurrentDate()
+{
+	var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth()+1; //January is 0!
+    var year = today.getFullYear();
+    
+    var hours = today.getHours();
+    var minutes = today.getMinutes();
+    var seconds = today.getSeconds();
+
+    if(day<10){day='0'+day} if(month<10){month='0'+month} if(hours<10){hours = "0"+hours} if(minutes<10){minutes = "0"+minutes} if(seconds<10){seconds = "0"+seconds} 
+    today = day+'-'+month+'-'+year + " " + hours + ":" + minutes + ":" + seconds;
+    return today.toString();
 }
 
 function getVersion() // parst die aktuelle Version aus einem Array, der aus Local Storage kommt
@@ -36,10 +51,10 @@ function getVersion() // parst die aktuelle Version aus einem Array, der aus Loc
         	var resultValue = neededValue; 
         }
     }
-    return resultValue; // und gibt es zurücks
+    return resultValue;
 }
 
-function setVersion() // setzt die aktuelle Version des Software
+function setVersion()
 {
 	var version = getVersion();
 	document.getElementById('nightlyVersion').innerHTML = version;
@@ -55,7 +70,7 @@ function getTouren() // liest den Array mit den aktuellen Touren ein
 		var innerJSONObject = JSONArray[i];
 		tourenArray[i] = innerJSONObject[text];
 	}
-	return tourenArray; // und gibt den zurück
+	return tourenArray;
 }
 
 function setAnzahlTouren() // berechnet die Länge des Tourenarrays
@@ -70,24 +85,24 @@ function setCurrentDriverDataAndMoveToTouren() // Einlesen des ausgewählten Fah
 	var currentDriver = String($('#FahrerAuswahl option:selected').text()); 
 	var driverPassword = String($('#password').val());
 	var currentVehicleNumber = String($('#AufliegerAuswahl option:selected').text());
-	var isPasswordCorrect = checkPassword(currentDriver, driverPassword); // Überprüfung, ob das eingegebene Passwort mit dem dem Fahrer zugewiesenen Passwort übereinstimmt
-	if(isPasswordCorrect == true) // wenn ja
+	var isPasswordCorrect = checkPassword(currentDriver, driverPassword);
+	if(isPasswordCorrect == true)
 	{
-		localStorage.setItem("currentDriver", currentDriver); // Speicherung des ausgewählten Fahrers als aktuellen in den Local Storage (wird beim nächsten Start der App ebenfalls vorbelegt)
-		localStorage.setItem("currentVehicleNumber", currentVehicleNumber); // dasselbe für seine Fahrzeugnummer (wird beim nächsten Start der App ebenfalls vorbelegt)...
-		localStorage.setItem("driverPassword", driverPassword); //... und Passwort
-		$.mobile.changePage("#Touren"); // Weiterleitung zu den Touren
+		localStorage.setItem("currentDriver", currentDriver);
+		localStorage.setItem("currentVehicleNumber", currentVehicleNumber);
+		localStorage.setItem("driverPassword", driverPassword);
+		$.mobile.changePage("#Touren"); // Weiterleitung zu der Touren-Seite
 		$('#password').val('');
 	}
-	else // wenn nein
+	else
 	{	
 		alert("PIN falsch! Bitte versuchen Sie es erneut!");
 		window.location.reload(); // Seite aktualisieren
 	}
-	updateAnmeldeBildschirm(); // und anschliessend die Vorbelegung des aktuellen Fahrers und der Fahrzeugnummer
+	updateAnmeldeBildschirm();
 }
 
-function checkPassword(currentDriver, password) // Überprüfung des eingegebenen Passworts mit dem dem Fahrer zugewiesenen
+function checkPassword(currentDriver, password)
 {
 	var resultValue = null;
 	var JSONArray = holeArray("Minova_DispoClient_Data_DriverBean_array");
@@ -106,10 +121,10 @@ function checkPassword(currentDriver, password) // Überprüfung des eingegebene
 			resultValue = false;
 		}
 	}
-	return resultValue; // Ergebnis der Überprüfung zurückliefern
+	return resultValue;
 }
 
-function getDriversFromLocalStorage() // Parsen aller Fahrer aus dem Array mit JSON-Objekten
+function getDriversFromLocalStorage()
 {
 	var JSONArray = holeArray("Minova_DispoClient_Data_DriverBean_array");
 	var fahrerArray = new Array(JSONArray.length);
@@ -120,21 +135,21 @@ function getDriversFromLocalStorage() // Parsen aller Fahrer aus dem Array mit J
 		fahrerArray[i] = innerJSONObject[text];
 	}
 	fahrerArray.sort();
-	return fahrerArray; // und Rückgabe als ein ganz normaler Array
+	return fahrerArray;
 }
 
-function setDriverSelectionMenu() // setzt die Fahrerauswahl
+function setDriverSelectionMenu()
 {
 	var driverSelectMenu = document.getElementById('FahrerAuswahl').innerHTML;
 	var selectedIndex = null;
 	var currentDriver = localStorage.getItem("currentDriver");
 	var fahrerArray = getDriversFromLocalStorage();
 	
-	for(var i=0; i<fahrerArray.length; i++) // Schleife über alle Fahrer
+	for(var i=0; i<fahrerArray.length; i++)
 	{
 		if(!driverSelectMenu) // wenn der Inhalt des Auswahlmenüs leer ist
 		{
-			$('#FahrerAuswahl').append('<option value='+fahrerArray[i]+'>'+fahrerArray[i]+'</option>'); // wird es in dieser Schleife erzeugt
+			$('#FahrerAuswahl').append('<option value='+fahrerArray[i]+'>'+fahrerArray[i]+'</option>');
 			if(currentDriver == fahrerArray[i]) // wenn der aktuelle Fahrer mit dem aus dem Array übereinstimmt
 			{
 				selectedIndex = i; // wird dieser Index als "ausgewählt" gesetzt
@@ -164,7 +179,7 @@ function getVehiclesFromLocalStorage() // Parsen aller Fahrzeugnummern aus dem A
 		vehicleArray[i] = innerJSONObject[text];
 	}
 	vehicleArray.sort();
-	return vehicleArray; // und Rückgabe derer als ein normaler Array
+	return vehicleArray;
 }
 
 function setVehicleSelectionMenu() // setzt die Fahrzeugauswahl analog zu der Fahrerauswahl
@@ -207,30 +222,26 @@ function prepareChangePassDialog()
 	$('#oldPassword').val('');
 	$('#newPassword').val('');
 	$('#confirmNewPassword').val('');
-	$('#changePassword').removeClass('ui-btn-active');
 }
 
-function changePassword() // Diese Methode dient zur Passwortänderung
+function changePassword()
 {
-	var oldPassInDialog = $('#oldPassword').val(); // Das in dem Popup-Dialog eingegebene alte Passwort
-	var driverPassword = localStorage.getItem('driverPassword'); // Das im Local Storage gespeicherte momentane Passwort
-	var newPassword = $('#newPassword').val(); // Das neu eingegebene Passwort
-	var confirmNewPassword = $('#confirmNewPassword').val(); // und dessen Bestätigung
+	var oldPassInDialog = $('#oldPassword').val();
+	var driverPassword = localStorage.getItem('driverPassword');
+	var newPassword = $('#newPassword').val();
+	var confirmNewPassword = $('#confirmNewPassword').val();
 	
-	if(oldPassInDialog == driverPassword && newPassword == confirmNewPassword) // Wenn das momentane Passwort und das in dem Dialog eingegebene alte Passwort sowie
-		// das neu eingegebene und bestätigte Passwörter übereinstimmen
+	if(oldPassInDialog == driverPassword && newPassword == confirmNewPassword)
 	{
-		localStorage.setItem('driverPassword', newPassword); // wird das Passwort auf das neue geändert und im Local Storage gespeichert
-		changeDriverPassInTable(newPassword); // Das neue Passwort auch in der Fahrertabelle ändern; diese befindet sich im Local Storage als ein JSONArray gespeichert
-	//	$('#changePassword').addClass('ui-btn-active');
-		alert("Ihr Passwort wurde erfolgreich geändert!"); // Feedback für den Benutzer, dass die Aktion erfolgreich war
+		localStorage.setItem('driverPassword', newPassword);
+		changeDriverPassInTable(newPassword);
+		alert("Ihr Passwort wurde erfolgreich geändert!");
 		$.mobile.changePage('#anmeldeBildschirm'); // Weiterleitung zu der Fahreranmeldeseite
 		
 	}
-	if(newPassword != confirmNewPassword) // Wenn die beiden neuen Passwörter ungleich sind
+	if(newPassword != confirmNewPassword)
 	{
-		// wird die entsprechende Meldung ausgegeben, der Nutzer aufgefordert, beide Passwörter korrekt einzugeben und
-		alert("Das neue Passwort und die Passwortbestätigung stimmen nicht überein! Versuchen Sie es bitte erneut!");
+		alert("Das neue Passwort und die Wiederholung stimmen nicht überein! Bitte versuchen Sie es erneut!");
 		$('#newPassword').val('');
 		$('#confirmNewPassword').val('');
 	}
@@ -256,7 +267,7 @@ function changeDriverPassInTable(newPassword) // Diese Methode soll das Passwort
 function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite, die die Touren anzeigt
 {
 	var tankLagerNameTour1 = "BURGHAUSEN";
-	var tankLagerNameTour2 = "AGIP FГњRNI";
+	var tankLagerNameTour2 = "AGIP FÜRNI";
 	var tour1Content = document.getElementById('Tour1PageContent').innerHTML;
 	var tour2Content = document.getElementById('Tour2PageContent').innerHTML;
 	var touren = getTouren();
@@ -309,13 +320,6 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 				{
 					var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
 					$('#Tour1Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
-					/*
-					 * 
-					 * TODO Inhalt der Abladeseite implementieren und jeweils anpassen
-					 * 
-					 * 
-					 * 
-					 * */
 				}
 			}
 		}
@@ -367,8 +371,10 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 function adjustErfassungPage(wert, tourID)
 {
 	var string = document.getElementById(wert.id).innerHTML;
-	var produktTypAusJSONObj = string.slice(0,string.indexOf(',')); //Abschneiden der Button-Id aus der vorherigen Methode (die ID enthält das Produkttyp)
-	document.getElementById('ProduktTypErfassung').innerHTML=produktTypAusJSONObj; // Einfügen des Produkttyps in die Eingabemaske, damit der Fahrer sieht, welches Produkt er gerade erfassen soll
+	var produktTypAusButton = string.slice(0,string.indexOf(',')); //Abschneiden der Button-Id aus der vorherigen Methode (die ID enthält das Produkttyp)
+	document.getElementById('ProduktTypErfassung').innerHTML=produktTypAusButton; // Einfügen des Produkttyps in die Eingabemaske, damit der Fahrer sieht, welches Produkt er gerade erfassen soll
+	var currentDate = getCurrentDate();
+	$('input[type=datetime-local]').attr('min', currentDate);
 	
 	var wertString;
 	var produktTyp;
@@ -391,8 +397,8 @@ function adjustErfassungPage(wert, tourID)
 					$('#Nr').val(innerJSONObject["Nr."]);
 					$('#Liter').val(innerJSONObject["Liter"]);
 					$('#Kilo').val(innerJSONObject["Kilo"]);
-					$('#Beginn').val(innerJSONObject["Beginn"]);
-					$('#Ende').val(innerJSONObject["Ende"]);
+					/*$('#Beginn').val(innerJSONObject["Beginn"]);
+					$('#Ende').val(innerJSONObject["Ende"]);*/
 				}
 			}
 		} // wenn es keine erfassten Produkte gibt, passiert nichts; die Maske wird leer eingeblendet
@@ -438,8 +444,8 @@ function adjustErfassungPage(wert, tourID)
 					$('#Nr').val(innerJSONObject["Nr."]);
 					$('#Liter').val(innerJSONObject["Liter"]);
 					$('#Kilo').val(innerJSONObject["Kilo"]);
-					$('#Beginn').val(innerJSONObject["Beginn"]);
-					$('#Ende').val(innerJSONObject["Ende"]);
+					/*$('#Beginn').val(innerJSONObject["Beginn"]);
+					$('#Ende').val(innerJSONObject["Ende"]);*/
 				}
 			}
 		} // falls es kein erfasstes Produkt gibt, wird die Maske leer generiert
@@ -466,20 +472,32 @@ function adjustErfassungPage(wert, tourID)
 function adjustKundenLieferAuftraege(wert, tourID)
 {
 	$('#KundenLieferAuftraegePageContent').empty();
-	$('#KundenLieferAuftraegePageContent').empty();
 	
 	var tour1ErfassteProdukte = localStorage.getItem('Tour 1-Erfasste Produkte');
 	var tour2ErfassteProdukte = localStorage.getItem('Tour 2-Erfasste Produkte');
+	
 	var kundenLieferAuftraegePageContent = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
 	var kundenLieferAuftraegePageFooter = document.getElementById('KundenLieferAuftraegePageFooter').innerHTML;
+	
 	var JSONArrayDelivery = holeArray('Minova_DispoClient_Data_DeliveryBean_array');
 	var JSONArrayShipment = holeArray('Minova_DispoClient_Data_ShipmentBean_array');
+	var JSONArrayLoadOrder = holeArray('Minova_DispoClient_Data_LoadOrderBean_array');
+	
 	var keyLong = "KeyLong";
 	var keyLongValue;
 	var keyLongArray = new Array();
 	var text = "Text";
+	
 	var deliveryKey = "DeliveryKey";
 	var shipmentKey = "ShipmentKey";
+	var itemKey = "ItemKey";
+	var tripKey = "TripKey";
+	
+	var name = "Name";
+	var city = "City";
+	var street = "Street";
+	var number = "Number";
+	var phoneNumber = "Phone";
 	
 	if(tourID == 1)
 	{
@@ -487,7 +505,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 		{
 			if(document.getElementById('keineLieferAuftraegeMeldung') == null)
 			{
-				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. <br>Bitte erfassen Sie zuerst welche!</div>').trigger('create');
+				$('#KundenLieferAuftraegePageContent').append('<div id="keineLieferAuftraegeMeldung">Es gibt keine Verladeprodukte. Bitte erfassen Sie zuerst welche!</div>').trigger('create');
 				$('#KundenLieferAuftraegePageFooterButton').attr('href', '#Tour1Page');
 			}
 		}
@@ -503,6 +521,11 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					var innerJSONObjectDelivery = JSONArrayDelivery[i];
 					if(innerJSONObjectDelivery[text] == wert.id)
 					{
+						var kundenAdresse = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
+						if(kundenAdresse == null || kundenAdresse == '')
+						{
+							$('#KundenLieferAuftraegePageContent').append('<div id="KundenAdresse">Kundenadresse: <br>'+innerJSONObjectDelivery[name]+', '+innerJSONObjectDelivery[street]+' Nr. '+innerJSONObjectDelivery[number]+', '+innerJSONObjectDelivery[city]+'</div>');
+						}
 						keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
 						keyLongArray.push(keyLongValue);
 					}
@@ -520,9 +543,8 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					{
 						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
 						{
-							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" class="lieferungAbladeButton" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
 							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
-							/* --------------------- Implementiere noch die jeweiligen Kundeninfos, an die die Produkte geliefert werden -------------------------*/
 						}
 					}
 				}
@@ -559,6 +581,11 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					var innerJSONObjectDelivery = JSONArrayDelivery[i];
 					if(innerJSONObjectDelivery[text] == wert.id)
 					{
+						var kundenAdresse = document.getElementById('KundenLieferAuftraegePageContent').innerHTML;
+						if(kundenAdresse == null || kundenAdresse == '')
+						{
+							$('#KundenLieferAuftraegePageContent').append('<div id="KundenAdresse">Kundenadresse: <br>'+innerJSONObjectDelivery[name]+', '+innerJSONObjectDelivery[street]+' Nr. '+innerJSONObjectDelivery[number]+', '+innerJSONObjectDelivery[city]+'</div>');
+						}
 						keyLongValue = innerJSONObjectDelivery[keyLong].valueOf();
 						keyLongArray.push(keyLongValue);
 					}
@@ -576,9 +603,8 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					{
 						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
 						{
-							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" class="lieferungAbladeButton" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
 							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
-							/* --------------------- Implementiere noch die jeweiligen Kundeninfos, an die die Produkte geliefert werden -------------------------*/
 						}
 					}
 				}
@@ -594,7 +620,54 @@ function adjustKundenLieferAuftraege(wert, tourID)
 	}
 }
 
-function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Eingaben aus der Produkterfassungsmaske
+function adjustProduktAbladePage(wert, tourID)
+{
+	if(tourID == 1)
+	{	
+		var produktTyp;
+		wertString = wert.id;
+		wertStringCut = wertString.slice(0, wertString.indexOf(','));
+		if(wertStringCut == "DK"){produktTyp = "Diesel ohne Additiv";}if(wertStringCut == "DK add  100"){produktTyp = "Diesel mit Additiv";}if(wertStringCut == "ES 95  120"){produktTyp = "Super 95";}
+		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
+		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
+		{
+			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktAbladungPageFooter').append(cancelVerladungButton).trigger('create');
+			$('#ProduktAbladungPageFooter').append(applyVerladungButton).trigger('create');
+		}
+		else
+		{
+			$('#CancelVerladung').attr('href', '#KundenLieferAuftraege');
+			$('#ApplyVerladung').attr('href', '#KundenLieferAuftraege');
+			$('#ApplyVerladung').attr('onclick', 'saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+		}
+	}
+	
+	if(tourID == 2)
+	{
+		var produktTyp;
+		wertString = wert.id;
+		wertStringCut = wertString.slice(0, wertString.indexOf(','));
+		if(wertStringCut == "DK add  100"){produktTyp = "Diesel mit Additiv";}if(wertStringCut == "NB 91  130"){produktTyp = "Normalbenzin 91";}if(wertStringCut == "ES 95  120"){produktTyp = "Super 95";}if(wertStringCut == "ES 98  140"){produktTyp = "Super 98";}
+		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
+		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
+		{
+			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
+			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			$('#ProduktAbladungPageFooter').append(cancelVerladungButton).trigger('create');
+			$('#ProduktAbladungPageFooter').append(applyVerladungButton).trigger('create');
+		}
+		else
+		{
+			$('#CancelVerladung').attr('href', '#KundenLieferAuftraege');
+			$('#ApplyVerladung').attr('href', '#KundenLieferAuftraege');
+			$('#ApplyVerladung').attr('onclick', 'saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
+		}
+	}
+}
+
+function erfasseProdukt(typ, tourID)
 {
 	var erfassteProdukteArray;
 	
@@ -611,22 +684,18 @@ function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Ein
 	// und anhand derer ein JSON-Objekt erstellt
 	var JSONObj = {"Produkttyp":produktTyp, "Liter 15°C":liter15, "Dichte":dichte, "Nr.":Nr, "Liter":Liter, "Kilo":Kilo, "Beginn":Beginn, "Ende":Ende};
 	
-	if(tourID == 1) // abhängig von der ID
+	if(tourID == 1)
 	{
-		// werden die erfassten Produkte aus dem Local Storage ausgelesen
 		erfassteProdukteArray = localStorage.getItem("Tour 1-Erfasste Produkte");
 	
-		if(!erfassteProdukteArray) // falls es keine gibt
+		if(!erfassteProdukteArray)
 		{
 			erfassteProdukteArray = [];
-			// werden diese in einen leeren Array platziert
 			erfassteProdukteArray.push(JSONObj);
-			// und der Array im Local Storage gespeichert
 			localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
 		}
-		else // falls es welche gibt
+		else
 		{
-			// werden diese geparst
 			erfassteProdukteArray = JSON.parse(erfassteProdukteArray);
 			for(var i=0; i<erfassteProdukteArray.length; i++)
 			{
@@ -639,19 +708,19 @@ function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Ein
 					erfassteProdukteArray.splice(i, 1, JSONObj);
 					// wird der Eintrag im Local Storage mit den neuen Änderungen überschrieben
 					localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
-					// danach die vorbelegten Werte aus der Eingabemaske entfernen
-					resetProductData();
+					// danach die vorbelegten Werte aus der Eingabemaske entfernt
+					resetProductErfassungData();
 					return;
 				}
 				
 			}
 			erfassteProdukteArray.push(JSONObj); // auch wenn die Eingaben nicht verändert wurden, wird der erfasste Produkt mit sich selbst überschrieben
-			localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray)); // und anschliessend im Local Storage gespeichert
+			localStorage.setItem("Tour 1-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
 		}
-		resetProductData(); // Eingabemaske zur nächsten Erfassung leer machen
+		resetProductErfassungData();
 	}
 	
-	if(tourID == 2) // Analoges Vorgehen für die 2. Tour
+	if(tourID == 2)
 	{
 		erfassteProdukteArray = localStorage.getItem("Tour 2-Erfasste Produkte");
 	
@@ -672,7 +741,7 @@ function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Ein
 				{
 					erfassteProdukteArray.splice(i, 1, JSONObj);
 					localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
-					resetProductData();
+					resetProductErfassungData();
 					return;
 				}
 				
@@ -680,26 +749,16 @@ function erfasseProdukt(typ, tourID) // diese Methode dient dem Auslesen der Ein
 			erfassteProdukteArray.push(JSONObj);
 			localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
 		}
-		resetProductData();
+		resetProductErfassungData();
 	}
 }
 
-function verladeProdukt()
+function saveVerladenesProdukt(produktTyp, tourID)
 {
-	/*********************
-	 * 
-	 * if(document.getElementById('CancelAbladung') == null && document.getElementById('ApplyAbladung') == null)
-			{
-				var cancelAbladungButton = ('<li><a href="#Tour1Kunden" id="CancelAbladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-				var applyAbladungButton = ('<li><a href="#Tour1Kunden" id="ApplyAbladung" data-role="button" onclick="verladeProdukt('+"'"+innerJSONObjectShipment[text]+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
-			}
-	 * 
-	 * 		UND SO WEITER.......!!!!!!!!!!!!!!!
-	 * 
-	 * **Diese Methode implementieren*********************/
+	
 }
 
-function resetProductData() // Diese Methode entfernt die eingegebenen Werte bei der Produkterfassung
+function resetProductErfassungData() // Diese Methode entfernt die eingegebenen Werte bei der Produkterfassung
 {
 	$('#Liter15Grad').val('');
 	$('#Dichte').val('');

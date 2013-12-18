@@ -3,11 +3,15 @@
 .ui-header
 {
     text-align : center;
+    height	   : 40px;
+	font-size  : 30px;
 }
 
 #callNumber
 {
-    text-align : center;
+    text-align	: center;
+    font-size	: 30px;
+    color		: blue;
 }
 
 #seriennummer
@@ -15,6 +19,9 @@
     height : 10px;
     width  : 150px
 }
+
+#ProduktTypAbladung
+{font-size : 24px;}
 
 /* --------------------------------------------------------------------------------------------------------- iPad (any) Landscape  ------------------------------------------------------------------------------------------------------- */
 @media screen and (min-device-width: 481px) 
@@ -31,11 +38,6 @@
 	}
 	
 	/* ------------------------------------------ Anpassungen für die Grundzustandsseite -------------------------------------- */
-	.ui-header
-	{
-		height	  : 40px;
-		font-size : 30px;
-	}
 	
 	#grundZustandInhalt
 	{
@@ -50,16 +52,16 @@
 	
 	#startButton
 	{
-		position 	: absolute;
-		left	 	: 15%;
-		top		 	: 10%;
-		width	 	: 70%;
-		opacity	 	: 0.9;
-		height	 	: 80px;
-		padding-top : 15px;
+		position 	   : absolute;
+		left	 	   : 15%;
+		top		 	   : 10%;
+		width	 	   : 70%;
+		opacity	 	   : 0.9;
+		height	 	   : 80px;
 	}
 	
-	#startButton .ui-btn-text{font-size:36px; margin-top:16px;}
+	#startButton .ui-btn-text {font-size:36px; top:6px;}
+	#startButton .ui-icon	  {top:40px;}
 	
 	#grundZustandFooter
 	{
@@ -70,6 +72,10 @@
     	height   : 60px;
 	}
 	/* ---------------------------------------- Ende der Anpassung für die Grundzustandseite ----------------------------------- */
+	
+	/* ---------------------------------------- Anpassungen für die Kontakt-Seite ---------------------------------------------- */
+	.ui-content .KontaktContentText{font-size : 24px;}
+	/* ---------------------------------------- Ende der Anpassungen für die Kontakt-Seite ------------------------------------- */
 	
 	/* ---------------------------------------- Anpassungen für die Startseite ------------------------------------------------- */
 	#startScreenContent
@@ -83,6 +89,10 @@
 	
 	#indicatorFunk{color:blue;}
 	/* ----------------------------------------- Ende der Anpassungen für die Startseite --------------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Meldungen-Seite ------------------------------------------- */
+	.ui-content .meldungenPageContentText{font-size : 24px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Meldungen-Seite ---------------------------------- */
 	
 	/* ----------------------------------------- Anpassungen für die Fahreranmeldungsseite ------------------------------------- */
 	#anmeldeBildschrimInhalt
@@ -116,13 +126,17 @@
 		width	 : 97%;
 	}
 	
-	.Tour1Link, .Tour2Link
+	#Tour1Link, #Tour2Link
 	{
     	height 		: 70px;
 	}
 	
-	.Tour1Link .ui-btn-inner .ui-btn-text, .Tour2Link .ui-btn-inner .ui-btn-text{font-size:40px;}
+	#Tour1Link .ui-btn-inner .ui-btn-text, #Tour2Link .ui-btn-inner .ui-btn-text{font-size:40px;}
 	/* ----------------------------------------- Ende der Anpassungen für die Tourenseiteninhalt -------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Notiz-Seite ------------------------------------------------ */
+	.ui-content .notizContentText{font-size : 24px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Notiz-Seite --------------------------------------- */
 	
 	/* ----------------------------------------- Anpassungen für den Seiteninhalt der jew. Tour --------------------------------- */
 	#tour1PageContentAdresse, #tour1PageContentTel, #LadeauftraegeTour1, #LieferauftraegeTour1, #tour2PageContentAdresse, #tour2PageContentTel, #LadeauftraegeTour2, #LieferauftraegeTour2
@@ -142,6 +156,10 @@
 	/* ----------------------------------------- Anpassungen für die KundenlieferAuftraegeseite --------------------------------- */
 	#keineLieferAuftraegeMeldung
 	{
+		position  : absolute;
+		top		  : 20%;
+		left	  : 10%;
+		width	  : 95%;
 		font-size : 48px;
 	}
 	
@@ -151,6 +169,8 @@
 		top		 : 20%;
 		width	 : 97%;
 	}
+	
+	#KundenAdresse{font-weight : bold; font-size : 28px;}
 	
 	.lieferungAbladeButton
 	{
@@ -201,10 +221,10 @@
 		width	 	: 70%;
 		opacity	 	: 0.9;
 		height	 	: 80px;
-		padding-top : 15px;
 	}
 	
-	#startButton .ui-btn-text{font-size:36px; margin-top:16px;}
+	#startButton .ui-btn-text {font-size:36px; top:6px;}
+	#startButton .ui-icon	  {top:40px;}
 	
 	#grundZustandFooter
 	{
@@ -215,6 +235,10 @@
     	height   : 60px;
 	}
 	/* ---------------------------------------- Ende der Anpassung für die Grundzustandseite ----------------------------------- */
+	
+	/* ---------------------------------------- Anpassungen für die Kontakt-Seite ---------------------------------------------- */
+	.ui-content .KontaktContentText{font-size : 24px;}
+	/* ---------------------------------------- Ende der Anpassungen für die Kontakt-Seite ------------------------------------- */
 	
 	/* ---------------------------------------- Anpassungen für die Startseite ------------------------------------------------- */
 	#startScreenContent
@@ -229,6 +253,10 @@
 	#indicatorFunk{color:blue;}
 	
 	/* ----------------------------------------- Ende der Anpassungen für die Startseite --------------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Meldungen-Seite ------------------------------------------- */
+	.ui-content .meldungenPageContentText{font-size : 24px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Meldungen-Seite ---------------------------------- */
 	
 	/* ----------------------------------------- Anpassungen für die Fahreranmeldungsseite ------------------------------------- */
 	#anmeldeBildschrimInhalt
@@ -262,19 +290,24 @@
 		width	 : 97%;
 	}
 	
-	.Tour1Link, .Tour2Link
+	#Tour1Link, #Tour2Link
 	{
     	height 	 : 70px;
 	}
 	
-	.Tour1Link .ui-btn-inner .ui-btn-text, .Tour2Link .ui-btn-inner .ui-btn-text{font-size:40px;}
+	#Tour1Link .ui-btn-inner .ui-btn-text, #Tour2Link .ui-btn-inner .ui-btn-text{font-size:40px;}
 	/* ----------------------------------------- Ende der Anpassungen für die Tourenseiteninhalt -------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Notiz-Seite ------------------------------------------------ */
+	.ui-content .notizContentText{font-size : 24px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Notiz-Seite --------------------------------------- */
 	
 	/* ----------------------------------------- Anpassungen für den Seiteninhalt der jew. Tour --------------------------------- */
 	#tour1PageContentAdresse, #tour1PageContentTel, #LadeauftraegeTour1, #LieferauftraegeTour1, #tour2PageContentAdresse, #tour2PageContentTel, #LadeauftraegeTour2, #LieferauftraegeTour2
 	{
 		font-size : 28px;
 	}
+	
 	/* ----------------------------------------- Ende der Anpassungen für den Seiteninhalt der jew. Tour ------------------------ */
 	
 	/* ----------------------------------------- Anpassungen für die Produkterfassungsmaske ------------------------------------- */
@@ -288,6 +321,10 @@
 	/* ----------------------------------------- Anpassungen für die KundenlieferAuftraegeseite --------------------------------- */
 	#keineLieferAuftraegeMeldung
 	{
+		position  : absolute;
+		top		  : 30%;
+		left	  : 2.5%;
+		width	  : 95%;
 		font-size : 48px;
 	}
 	
@@ -297,6 +334,8 @@
 		top		 : 20%;
 		width	 : 97%;
 	}
+	
+	#KundenAdresse{font-weight : bold; font-size : 28px;}
 	
 	.lieferungAbladeButton
 	{
@@ -357,6 +396,10 @@
 	}
 	/* ---------------------------------------- Ende der Anpassung für die Grundzustandseite ------------------------------------ */
 	
+	/* ---------------------------------------- Anpassungen für die Kontakt-Seite ---------------------------------------------- */
+	.ui-content .KontaktContentText{font-size : 20px;}
+	/* ---------------------------------------- Ende der Anpassungen für die Kontakt-Seite ------------------------------------- */
+	
 	/* ---------------------------------------- Anpassungen für die Startseite -------------------------------------------------- */
 	#startScreenContent
 	{
@@ -369,6 +412,10 @@
 	#indicatorFunk{color:blue;}
 	
 	/* ----------------------------------------- Ende der Anpassungen für die Startseite ---------------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Meldungen-Seite ------------------------------------------- */
+	.ui-content .meldungenPageContentText{font-size : 20px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Meldungen-Seite ---------------------------------- */
 	
 	/* ----------------------------------------- Anpassungen für die Fahreranmeldungsseite -------------------------------------- */
 	#anmeldeBildschrimInhalt
@@ -406,13 +453,44 @@
 		width	 : 90%;
 	}
 	
-	.Tour1Link, .Tour2Link
+	#Tour1Link, #Tour2Link
 	{
-    	height 		: 70px;
+    	height 	 : 70px;
 	}
 	
-	.Tour1Link .ui-btn-inner .ui-btn-text, .Tour2Link .ui-btn-inner .ui-btn-text{font-size:20px;}
-	.Tour1Link .ui-btn-inner, .Tour2Link .ui-btn-inner{margin-top:12px;}
+	#Tour1Link .ui-btn-inner .ui-btn-text, #Tour2Link .ui-btn-inner .ui-btn-text{font-size:20px; top:10px;}
+	#Tour1Link .ui-icon, #Tour2Link .ui-icon {top:33px;}
 	/* ----------------------------------------- Ende der Anpassungen für die Tourenseiteninhalt --------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Notiz-Seite ------------------------------------------------ */
+	.ui-content .notizContentText{font-size : 20px;}
+	/* ----------------------------------------- Ende der Anpassungen für die Notiz-Seite --------------------------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die KundenlieferAuftraegeseite --------------------------------- */
+	#keineLieferAuftraegeMeldung
+	{
+		position  : absolute;
+		top		  : 30%;
+		left	  : 2.5%;
+		width	  : 95%;
+		font-size : 30px;
+	}
+	
+	#KundenLieferAuftraegePageContent
+	{
+		position : absolute;
+		top		 : 20%;
+		height	 : 30px;
+		left	 : 2.5%;
+		width	 : 95%;
+	}
+	
+	.lieferungAbladeButton
+	{
+		height 	 : 50px;
+	}
+	
+	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:22px;}
+	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
 }
 
