@@ -622,11 +622,64 @@ function adjustKundenLieferAuftraege(wert, tourID)
 
 function adjustProduktAbladePage(wert, tourID)
 {
+	$("#vorpeilungDiv").css('display', 'none');
+	$("#nachpeilungDiv").css('display', 'none');
+	$("#pumpenStandDiv").css('display', 'none');
+	
+	var produktTyp;
+	wertString = wert.id; // Zum Beispiel "ES 98  140, 15809Liter"
+	wertStringCut = wertString.slice(0, wertString.indexOf(',')); // Zum Beispiel ES 98  140
+	
+	var JSONArrayShipment = holeArray('Minova_DispoClient_Data_ShipmentBean_array');
+	
+	var text = "Text";
+	var deliveryKey = "DeliveryKey";
+	var deliveryKeyValue;
+	
 	if(tourID == 1)
 	{	
-		var produktTyp;
-		wertString = wert.id;
-		wertStringCut = wertString.slice(0, wertString.indexOf(','));
+		
+		for(var i=0; i<JSONArrayShipment.length; i++)
+		{
+			var innerJSONObjectShipment = JSONArrayShipment[i];
+			if(innerJSONObjectShipment[text] == wert.id)
+			{
+				deliveryKeyValue = innerJSONObjectShipment[deliveryKey];
+			}
+			
+			for(var y=0; y<JSONArrayShipment.length; y++)
+			{
+				var innerJSONObjShipment = JSONArrayShipment[y];
+				if(innerJSONObjShipment[deliveryKey] == deliveryKeyValue)
+				{
+					var innerJSONObjShipmentTextColumnString = innerJSONObjShipment[text].toString();
+					if(innerJSONObjShipmentTextColumnString.indexOf('VP') != -1)
+					{
+						$("#vorpeilungDiv").css('display', 'block');
+						$("label[for='Vorpeilung']").text(innerJSONObjShipment[text]);
+						$("label[for='Vorpeilung']").css('display', 'inline-block');
+						$("#Vorpeilung").css('display', 'inline-block');
+					}
+					
+					else if(innerJSONObjShipmentTextColumnString.indexOf('NP') != -1)
+					{
+						$("#nachpeilungDiv").css('display', 'block');
+						$("label[for='NachpeilungVolume']").text(innerJSONObjShipment[text]);
+						$("label[for='NachpeilungVolume']").css('display', 'inline-block');
+						$("#NachpeilungVolume").css('display', 'inline-block');
+					}
+					
+					else if(innerJSONObjShipmentTextColumnString.indexOf('PS') != -1)
+					{
+						$("#pumpenStandDiv").css('display', 'block');
+						$("label[for='PumpenstandVolume']").text(innerJSONObjShipment[text]);
+						$("label[for='PumpenstandVolume']").css('display', 'inline-block');
+						$("#PumpenstandVolume").css('display', 'inline-block');
+					}
+				}
+			}
+		}
+		
 		if(wertStringCut == "DK"){produktTyp = "Diesel ohne Additiv";}if(wertStringCut == "DK add  100"){produktTyp = "Diesel mit Additiv";}if(wertStringCut == "ES 95  120"){produktTyp = "Super 95";}
 		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
 		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
@@ -642,13 +695,69 @@ function adjustProduktAbladePage(wert, tourID)
 			$('#ApplyVerladung').attr('href', '#KundenLieferAuftraege');
 			$('#ApplyVerladung').attr('onclick', 'saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
 		}
+		
+		$('#Abgabemenge').on("keyup", function()
+		{
+			var abgabeMenge = $('#Abgabemenge').val();
+			var abgabeMengeInt = parseInt(abgabeMenge);
+			var vorpeilung = $('#Vorpeilung').val();
+			var vorpeilungInt = parseInt(vorpeilung);
+			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+		});
+		
+		$('#Vorpeilung').on("keyup", function()
+		{
+			var abgabeMenge = $('#Abgabemenge').val();
+			var abgabeMengeInt = parseInt(abgabeMenge);
+			var vorpeilung = $('#Vorpeilung').val();
+			var vorpeilungInt = parseInt(vorpeilung);
+			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+		});
 	}
 	
 	if(tourID == 2)
 	{
-		var produktTyp;
-		wertString = wert.id;
-		wertStringCut = wertString.slice(0, wertString.indexOf(','));
+		for(var i=0; i<JSONArrayShipment.length; i++)
+		{
+			var innerJSONObjectShipment = JSONArrayShipment[i];
+			if(innerJSONObjectShipment[text] == wert.id)
+			{
+				deliveryKeyValue = innerJSONObjectShipment[deliveryKey];
+			}
+			
+			for(var y=0; y<JSONArrayShipment.length; y++)
+			{
+				var innerJSONObjShipment = JSONArrayShipment[y];
+				if(innerJSONObjShipment[deliveryKey] == deliveryKeyValue)
+				{
+					var innerJSONObjShipmentTextColumnString = innerJSONObjShipment[text].toString();
+					if(innerJSONObjShipmentTextColumnString.indexOf('VP') != -1)
+					{
+						$("#vorpeilungDiv").css('display', 'block');
+						$("label[for='Vorpeilung']").text(innerJSONObjShipment[text]);
+						$("label[for='Vorpeilung']").css('display', 'inline-block');
+						$("#Vorpeilung").css('display', 'inline-block');
+					}
+					
+					if(innerJSONObjShipmentTextColumnString.indexOf('NP') != -1)
+					{
+						$("#nachpeilungDiv").css('display', 'block');
+						$("label[for='NachpeilungVolume']").text(innerJSONObjShipment[text]);
+						$("label[for='NachpeilungVolume']").css('display', 'inline-block');
+						$("#NachpeilungVolume").css('display', 'inline-block');
+					}
+					
+					if(innerJSONObjShipmentTextColumnString.indexOf('PS') != -1)
+					{
+						$("#pumpenStandDiv").css('display', 'block');
+						$("label[for='PumpenstandVolume']").text(innerJSONObjShipment[text]);
+						$("label[for='PumpenstandVolume']").css('display', 'inline-block');
+						$("#PumpenstandVolume").css('display', 'inline-block');
+					}
+				}
+			}
+		}
+		
 		if(wertStringCut == "DK add  100"){produktTyp = "Diesel mit Additiv";}if(wertStringCut == "NB 91  130"){produktTyp = "Normalbenzin 91";}if(wertStringCut == "ES 95  120"){produktTyp = "Super 95";}if(wertStringCut == "ES 98  140"){produktTyp = "Super 98";}
 		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
 		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
@@ -664,6 +773,24 @@ function adjustProduktAbladePage(wert, tourID)
 			$('#ApplyVerladung').attr('href', '#KundenLieferAuftraege');
 			$('#ApplyVerladung').attr('onclick', 'saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')');
 		}
+		
+		$('#Abgabemenge').on("keyup", function()
+		{
+			var abgabeMenge = $('#Abgabemenge').val();
+			var abgabeMengeInt = parseInt(abgabeMenge);
+			var vorpeilung = $('#Vorpeilung').val();
+			var vorpeilungInt = parseInt(vorpeilung);
+			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+		});
+	
+		$('#Vorpeilung').on("keyup", function()
+		{
+			var abgabeMenge = $('#Abgabemenge').val();
+			var abgabeMengeInt = parseInt(abgabeMenge);
+			var vorpeilung = $('#Vorpeilung').val();
+			var vorpeilungInt = parseInt(vorpeilung);
+			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+		});
 	}
 }
 
@@ -744,7 +871,6 @@ function erfasseProdukt(typ, tourID)
 					resetProductErfassungData();
 					return;
 				}
-				
 			}
 			erfassteProdukteArray.push(JSONObj);
 			localStorage.setItem("Tour 2-Erfasste Produkte", JSON.stringify(erfassteProdukteArray));
@@ -753,9 +879,83 @@ function erfasseProdukt(typ, tourID)
 	}
 }
 
-function saveVerladenesProdukt(produktTyp, tourID)
+function saveVerladenesProdukt(typ, tourID)
 {
+	var verladeneProdukteArray;
 	
+	var produktTyp = typ.toString();
+	var abgabeMenge = $('#Abgabemenge').val();
+	var bonNummer = $('#Bonnummer').val();
+	var vorpeilung = $('#Vorpeilung').val();
+	var gesamtAngabe = $('#GESAMTAngabe').val();
+	var nachpeilungVolume = $('#NachpeilungVolume').val();
+	var pumpenStandVolume = $('#PumpenstandVolume').val();
+	
+	var JSONObj = {"Produkttyp":produktTyp, "Abgabemenge":abgabeMenge, "Bonnummer":bonNummer, "Vorpeilung":vorpeilung, "Gesamtangabe":gesamtAngabe, "NachpeilungVolume":nachpeilungVolume, "PumpenstandVolume":pumpenStandVolume};
+	
+	if(tourID = 1)
+	{
+		verladeneProdukteArray = localStorage.getItem("Tour 1-Verladene Produkte");
+		
+		if(!verladeneProdukteArray)
+		{
+			verladeneProdukteArray = [];
+			verladeneProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 1-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+		}
+		
+		else
+		{
+			verladeneProdukteArray = JSON.parse(verladeneProdukteArray);
+			for(var i=0; i<verladeneProdukteArray.length; i++)
+			{
+				var key = "Produkttyp";
+				var innerJSONObject = verladeneProdukteArray[i];
+				if(typ == innerJSONObject[key])
+				{
+					verladeneProdukteArray.splice(i, 1, JSONObj);
+					localStorage.setItem("Tour 1-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+					resetProductVerladungData();
+					return;
+				}
+			}
+			verladeneProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 1-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+		}
+		resetProductVerladungData();
+	}
+	
+	if(tourID = 2)
+	{
+		verladeneProdukteArray = localStorage.getItem("Tour 2-Verladene Produkte");
+		
+		if(!verladeneProdukteArray)
+		{
+			verladeneProdukteArray = [];
+			verladeneProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 2-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+		}
+		
+		else
+		{
+			verladeneProdukteArray = JSON.parse(verladeneProdukteArray);
+			for(var i=0; i<verladeneProdukteArray.length; i++)
+			{
+				var key = "Produkttyp";
+				var innerJSONObject = verladeneProdukteArray[i];
+				if(typ == innerJSONObject[key])
+				{
+					verladeneProdukteArray.splice(i, 1, JSONObj);
+					localStorage.setItem("Tour 2-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+					resetProductVerladungData();
+					return;
+				}
+			}
+			verladeneProdukteArray.push(JSONObj);
+			localStorage.setItem("Tour 2-Verladene Produkte", JSON.stringify(verladeneProdukteArray));
+		}
+		resetProductVerladungData();
+	}
 }
 
 function resetProductErfassungData() // Diese Methode entfernt die eingegebenen Werte bei der Produkterfassung
@@ -767,6 +967,16 @@ function resetProductErfassungData() // Diese Methode entfernt die eingegebenen 
 	$('#Kilo').val('');
 	$('#Beginn').val('');
 	$('#Ende').val('');
+}
+
+function resetProductVerladungData()
+{
+	$('#Abgabemenge').val('');
+	$('#Bonnummer').val('');
+	$('#Vorpeilung').val('');
+	$('#GESAMTAngabe').val('');
+	$('#NachpeilungVolume').val('');
+	$('#PumpenstandVolume').val('');
 }
 
 $(document).bind('pagechange', function()  // Bei jeder Änderung der Seite wird zuerst

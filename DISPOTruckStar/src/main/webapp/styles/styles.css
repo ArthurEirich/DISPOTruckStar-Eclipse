@@ -179,6 +179,14 @@
 	
 	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:30px;}
 	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Produktablade-Seite ---------------------------------------- */
+	label[for=Abgabemenge], label[for=Bonnummer], label[for=Vorpeilung], label[for=GESAMTAngabe], label[for=NachpeilungVolume], label[for=PumpenstandVolume]
+	{
+		font-weight : bold;
+    	font-size	: 20px;
+	}
+	/* ----------------------------------------- Ender der Anpassungen für die Produktablade-Seite ------------------------------ */
 }
 
 /* ---------------------------------------------------------------------------------------------------------- iPad (any) Portrait ------------------------------------------------------------------------------- */
@@ -344,6 +352,12 @@
 	
 	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:30px;}
 	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
+	
+	label[for=Abgabemenge], label[for=Bonnummer], label[for=Vorpeilung], label[for=GESAMTAngabe], label[for=NachpeilungVolume], label[for=PumpenstandVolume]
+	{
+		font-weight : bold;
+    	font-size	: 20px;
+	}
 }
 
 /* ----------------------------------------------------------------------------------------- iPhone (any) portrait  -------------------------------------------------------------------------- */
@@ -351,6 +365,14 @@
 				   and (max-device-width : 480px) 
 				   and (orientation:portrait) 
 {
+	.ui-header
+	{
+		height	  : 36px;	
+		font-size : 26px;
+		vertical-align: middle;
+	}
+	
+	
 	.documentBody .ui-btn-inner .ui-btn-text
 	{
 		font-family : Arial, Helvetica, sans-serif;
@@ -358,10 +380,6 @@
 	}
 	
 	/* ------------------------------------------ Anpassungen für die Grundzustandsseite ---------------------------------------- */ 
-	.ui-header
-	{
-		font-size: 18px;
-	}
 	
 	#grundZustandInhalt
 	{
@@ -421,29 +439,24 @@
 	#anmeldeBildschrimInhalt
 	{
 		position : absolute;
-		top		 : 1%;
+		top		 : 10%;
 		left     : 1%;
 		width	 : 89%;
 	}
 	
-	label[for=FahrerAuswahl] 
-	{
-    	font-weight : bold;
-    	font-size	: 18px;
-	}
-	
-	label[for=password] 
-	{
-    	font-weight : bold;
-    	font-size	: 18px;
-	}
-	
-	label[for=AufliegerAuswahl] 
+	label[for=FahrerAuswahl], label[for=password], label[for=AufliegerAuswahl] 
 	{
     	font-weight : bold;
     	font-size	: 18px;
 	}
 	/* ----------------------------------------- Ende der Anpassungen für die Fahreranmeldungsseite ------------------------------ */
+	
+	/* ----------------------------------------- Anpassungen für die Passwortänderugnsseite ------------------------------------ */
+	label[for=oldPassword], label[for=newPassword], label[for=confirmNewPassword] 
+	{
+    	font-weight : bold;
+    	font-size	: 20px;
+	}
 	
 	/* ----------------------------------------- Anpassungen für die Tourenseiteninhalt ------------------------------------------ */
 	#TourenPageContent
@@ -479,7 +492,7 @@
 	#KundenLieferAuftraegePageContent
 	{
 		position : absolute;
-		top		 : 20%;
+		top		 : 15%;
 		height	 : 30px;
 		left	 : 2.5%;
 		width	 : 95%;
@@ -492,5 +505,12 @@
 	
 	.lieferungAbladeButton .ui-btn-inner .ui-btn-text{font-size:22px;}
 	/* ----------------------------------------- Ender der Anpassungen für die KundenlieferAuftraegeseite ----------------------- */
+	
+	/* ----------------------------------------- Anpassungen für die Produktablade-Seite ---------------------------------------- */
+	label[for=Abgabemenge], label[for=Bonnummer], label[for=Vorpeilung], label[for=GESAMTAngabe], label[for=NachpeilungVolume], label[for=PumpenstandVolume]
+	{
+		font-weight : bold;
+    	font-size	: 18px;
+	}
 }
 

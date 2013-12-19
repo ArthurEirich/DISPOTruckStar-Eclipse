@@ -26,7 +26,7 @@
         <div data-role="page" id="grundZustandSeitenId">
         
             <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="a">
-                Willkommen bei DISPOTruckStar
+                Willkommen
             </div>
             
             <div data-role="content" id="grundZustandInhalt">
@@ -47,7 +47,7 @@
         
 
             <div data-role="header" data-theme="b">
-                DISPO   [ R:<span id="indicator">unknown</span>, G:<span id="GPSIndicator">unknown</span> ]
+                DISPO   [ R:<span id="indicator">?</span>, G:<span id="GPSIndicator">?</span> ]
             </div>
 
             <div data-role="content" id="startScreenContent">
@@ -89,7 +89,7 @@
         <div data-role="page" id="Kontakt">
         
             <div data-role="header" data-theme="e">
-                Kontakt
+                <div class="dialogHeader"><span>Kontakt</span></div>
             </div>
             
             <div data-role="content">
@@ -101,8 +101,8 @@
         
         <div data-role="page" id="meldungenPage">
         
-	        <div data-role="header" data-theme="e">
-	            Meldungen
+	        <div data-role="header"  data-theme="e">
+	            <div class="dialogHeader"><span>Meldungen</span></div>
 	        </div>
 	        
 	        <div data-role="content">
@@ -114,7 +114,7 @@
        	<div data-role="page" id="anmeldeBildschirm">
 
             <div data-role="header" data-theme="b" data-position="fixed">
-                DISPO   [ R:<span id="indicator">unknown</span>, G:<span id="GPSIndicator">unknown</span> ]
+                DISPO   [ R:<span id="indicator">?</span>, G:<span id="GPSIndicator">?</span> ]
             </div>
 
             <div data-role="content" id="anmeldeBildschrimInhalt">
@@ -150,7 +150,7 @@
 		<div data-role="page" id="changePass">
 
             <div data-role="header" data-theme="e">
-                PIN ändern
+                <div class="dialogHeader"><span>PIN ändern</span></div>
             </div>
 
             <div data-role="content">
@@ -166,13 +166,13 @@
                 </div>
 
                 <div data-role="fieldcontain">
-                    <label for="confirmNewPassword">Wieder- <br>holung:</label>
+                    <label for="confirmNewPassword">Noch ein Mal:</label>
                     <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
                 </div>
 
-                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="c" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="left">Abbrechen</a>
+                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="c" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="top">Abbrechen</a>
                 <div data-role="button" id="changePassword" onclick="changePassword()" data-inline="true" data-mini="true"
-                                data-theme="e" data-icon="check" data-iconpos="right">Bestätigen</div>
+                                data-theme="e" data-icon="check" data-iconpos="top">Bestätigen</div>
             </div>
 
 		</div>
@@ -204,7 +204,7 @@
 		<div data-role="page" id="notiz">
 			
 			<div data-role="header" data-theme="e">
-                Notizen
+                <div class="dialogHeader"><span>Notizen</span></div>
             </div>
 			
 			<div data-role="content">
@@ -311,7 +311,7 @@
 		<div data-role="page" id="KundenLieferAuftraege">
 		
 			<div data-role="header" data-position="fixed" data-theme="b">
-				Lieferstellen für diese Produkte
+				Lieferstelle
 			</div>
 			
 			<div data-role="content">
@@ -350,32 +350,25 @@
 		            <input type="number" name="Bonnummer" id="Bonnummer" value="" placeholder="Bonnummer" data-clear-btn="true"/>
 	            </div>
 	            
-	            <div id="VorpeilungContainer"></div>
-	            
-	            <div data-role="fieldcontain">
-		            <label for="Vorpeilung">Vorpeilung:</label>
+	            <div data-role="fieldcontain" id="vorpeilungDiv">
+		            <label for="Vorpeilung" id="vorpeilungLabel"></label>
 		            <input type="number" name="Vorpeilung" id="Vorpeilung" value="" placeholder="Vorpeilung" data-clear-btn="true"/>
 	            </div>
 	            
-	            <div id="GESAMTAngabe">Gesamt: <span id="gesamtAngabe">0</span></div> 
+	            <div data-role="fieldcontain">
+	            	<label for="GESAMTAngabe">Gesamt:</label>
+	            	<input  name="GESAMTAngabe" id="GESAMTAngabe" value="" placeholder="Gesamt" readonly/>
+	            </div> 
 	            
-	            <div id="NachpeilungUndPumpenstandContainer"> <!-- Dieser Container wird je nach Produktart ein- oder ausgeblendet -->
-	            
-	            	<div id="NachpeilungContainer"></div>
-	            	
-	            	<div data-role="fieldcontain">
-			            <label for="NachpeilungVolume">Volume:</label>
-			            <input type="number" name="NachpeilungVolume" id="NachpeilungVolume" value="" placeholder="Volume" data-clear-btn="true"/>
-	            	</div>
-	            	
-	            	<div id="PumpenstandContainer"></div>
-	            	
-	            	<div data-role="fieldcontain">
-			            <label for="PumpenstandVolume">Volume:</label>
-			            <input type="number" name="PumpenstandVolume" id="PumpenstandVolume" value="" placeholder="Volume" data-clear-btn="true"/>
-	            	</div>
-	            	
-	            </div>
+            	<div data-role="fieldcontain" id="nachpeilungDiv">
+		            <label for="NachpeilungVolume" id="nachpeilungLabel"></label>
+		            <input type="number" name="NachpeilungVolume" id="NachpeilungVolume" value="" placeholder="Nachpeilung" data-clear-btn="true"/>
+            	</div>
+            	
+            	<div data-role="fieldcontain" id="pumpenStandDiv">
+		            <label for="PumpenstandVolume" id="pumpenStandLabel"></label>
+		            <input type="number" name="PumpenstandVolume" id="PumpenstandVolume" value="" placeholder="Pumpenstand" data-clear-btn="true"/>
+            	</div>
 				
 			</div>
 			
