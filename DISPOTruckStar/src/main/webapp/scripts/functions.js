@@ -1,22 +1,26 @@
-function updateStartScreen() 
+function updateStartScreenAndServicePage() 
 {
 	var currentVehicleNumber = localStorage.getItem("currentVehicleNumber");
 	if(!currentVehicleNumber)
 	{
 		document.getElementById('vehicleNumber').innerHTML = "kein Fahrzeug ausgewählt";
+		document.getElementById('vehicleNumberServicePage').innerHTML = "kein Fahrzeug ausgewählt";
 	}
 	else
 	{
 		document.getElementById('vehicleNumber').innerHTML = currentVehicleNumber;
+		document.getElementById('vehicleNumberServicePage').innerHTML = currentVehicleNumber;
 	}
 	setVersion();
 	setAnzahlTouren();
+	updateIndicator();
 }
 
 function updateIndicator() // prüft, ob Navigationshardware an oder aus ist
 {
     document.getElementById('indicator').innerHTML = navigator.onLine ? 'OK' : 'X';
     document.getElementById('indicatorFunk').innerHTML = navigator.onLine ? 'Verbunden' : 'offline';
+    document.getElementById('indicatorFunkServicePage').innerHTML = navigator.onLine ? 'Verbunden' : 'offline';
     document.getElementById('GPSIndicator').innerHTML = navigator.geolocation ? 'OK' : 'X';
 }
 
@@ -58,6 +62,7 @@ function setVersion()
 {
 	var version = getVersion();
 	document.getElementById('nightlyVersion').innerHTML = version;
+	document.getElementById('nightlyVersionServicePage').innerHTML = version;
 }
 
 function getTouren() // liest den Array mit den aktuellen Touren ein
@@ -77,6 +82,7 @@ function setAnzahlTouren() // berechnet die Länge des Tourenarrays
 {
 	var anzahlTouren = getTouren().length;
 	document.getElementById("anzahlTouren").innerHTML = anzahlTouren; // und setzt diese Länge auf der Startseite ein
+	document.getElementById("anzahlTourenServicePage").innerHTML = anzahlTouren;
 }
 
 
@@ -213,6 +219,8 @@ function setVehicleSelectionMenu() // setzt die Fahrzeugauswahl analog zu der Fa
 
 function updateAnmeldeBildschirm()
 {
+	document.getElementById('indicatorAnmeldeBildschirm').innerHTML = navigator.onLine ? 'OK' : 'X';
+	document.getElementById('GPSIndicatorAnmeldeBildschirm').innerHTML = navigator.onLine ? 'OK' : 'X';
 	setDriverSelectionMenu(); // Vorbelegung des Fahrers
 	setVehicleSelectionMenu(); // und des Fahrzeugs
 }
@@ -284,86 +292,109 @@ function setTourContent(tourID) // Diese Methode generiert den Inhalt der Seite,
 	var phone = "Phone";
 	var tripKey = "TripKey";
 	
+	var istTour1Gestartet = localStorage.getItem("Tour1 gestartet");
+	var istTour2Gestartet = localStorage.getItem("Tour2 gestartet");
+	
 	if(tourID == 1) // Abhängig vom ID der Seite wird der Inhalt angepasst
 	{
-		for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
+		if(!istTour2Gestartet || istTour2Gestartet == "false")
 		{
-			var innerJSONObjectDepot = JSONArrayDepot[i];
-			if(innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
+			for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
 			{
-				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
-				$('#Tour1PageContent').append('<div id="tour1PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
-				$('#Tour1PageContent').append('<div id="tour1PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'<br></b></div>');
-				$('#Tour1PageContent').append('<div id="LadeauftraegeTour1">Ladeaufträge für diese Tour:<br></div>');
-				$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Produkte"></div>');
-				$('#Tour1PageContent').append('<div id="LieferauftraegeTour1">Lieferaufträge für diese Tour:<br></div>');
-				$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Kunden"></div>');
-			}
-			
-			for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
-			{
-				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
-				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == "")) 
-					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
+				var innerJSONObjectDepot = JSONArrayDepot[i];
+				if(innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
-					//die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
-					var buttonLinkToErfassung = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
-					$('#Tour1Produkte').append(buttonLinkToErfassung).trigger('create');
+					// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
+					$('#Tour1PageContent').append('<div id="tour1PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
+					$('#Tour1PageContent').append('<div id="tour1PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'<br></b></div>');
+					$('#Tour1PageContent').append('<div id="LadeauftraegeTour1">Ladeaufträge für diese Tour:<br></div>');
+					$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Produkte"></div>');
+					$('#Tour1PageContent').append('<div id="LieferauftraegeTour1">Lieferaufträge für diese Tour:<br></div>');
+					$('#Tour1PageContent').append('<div data-role="controlgroup" id="Tour1Kunden"></div>');
+				}
+				
+				for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
+				{
+					var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
+					if(innerJSONObjectDepot[text] == tankLagerNameTour1 && innerJSONObjectLoadOrder[tripKey] === "4771" && (!tour1Content || tour1Content == "")) 
+						// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
+					{
+						// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
+						//die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
+						var buttonLinkToErfassung = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+						$('#Tour1Produkte').append(buttonLinkToErfassung).trigger('create');
+					}
+				}
+				
+				for(var z=0; z<JSONArrayDelivery.length; z++)
+				{
+					var innerJSONObjectDelivery = JSONArrayDelivery[z];
+					if(innerJSONObjectDelivery[tripKey] === "4771" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == ""))
+					{
+						var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
+						$('#Tour1Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
+					}
 				}
 			}
-			
-			for(var z=0; z<JSONArrayDelivery.length; z++)
-			{
-				var innerJSONObjectDelivery = JSONArrayDelivery[z];
-				if(innerJSONObjectDelivery[tripKey] === "4771" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour1 && (!tour1Content || tour1Content == ""))
-				{
-					var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
-					$('#Tour1Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
-				}
-			}
+			localStorage.setItem("Tour1 gestartet", "true");
+		}
+		
+		else
+		{
+			alert("Sie können mehrere Touren nicht starten!");
+			$.mobile.changePage("#Touren");
 		}
 	}
 	
 	if(tourID == 2) // Analoger Vorgang für die 2. Tour (derzeit nur zwei Touren, später soll dieser Vorgang dynamisiert werden)
 	{
-		for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
+		if(!istTour1Gestartet || istTour1Gestartet == "false")
 		{
-			var innerJSONObjectDepot = JSONArrayDepot[i];
-			if(innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
+			for(var i=0; i<JSONArrayDepot.length; i++) // Schleife über den Array mit den Depotangaben
 			{
-				// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
-				$('#Tour2PageContent').append('<div id="tour2PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
-				$('#Tour2PageContent').append('<div id="tour2PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
-				$('#Tour2PageContent').append('<div id="LadeauftraegeTour2">Ladeaufträge für diese Tour:<br></div>');
-				$('#Tour2PageContent').append('<div data-role="controlgroup" id="Tour2Produkte"></div>');
-				$('#Tour2PageContent').append('<div id="LieferauftraegeTour2">Lieferaufträge für diese Tour:<br></div>');
-				$('#Tour2PageContent').append('<div id="Tour2Kunden"></div>');
-			}
-			
-			for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
-			{
-				var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
-				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
-					// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
+				var innerJSONObjectDepot = JSONArrayDepot[i];
+				if(innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == "")) // Bei der Übereinstimmung mit dem benötigten Tanklagernamen und leerem Content (leer, weil sonst der Inhalt mehrmals generiert wird)
 				{
-					// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
-					// die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
-					// Als Id für die Buttons dient die jeweilige Art des Produkts (Bsp.: "Diesel mit Additiv, 6500 Liter")
-					var produktTypButton = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-theme="e" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
-					$('#Tour2Produkte').append(produktTypButton).trigger('create');
+					// werden die Tanklagerangaben angepasst und der Seite hinzugefügt
+					$('#Tour2PageContent').append('<div id="tour2PageContentAdresse"><b>Adresse: '+innerJSONObjectDepot[street]+' Nr. '+innerJSONObjectDepot[number]+', '+innerJSONObjectDepot[city]+'</b></div>');
+					$('#Tour2PageContent').append('<div id="tour2PageContentTel"><b>Tel.: '+innerJSONObjectDepot[phone]+'</b></div>');
+					$('#Tour2PageContent').append('<div id="LadeauftraegeTour2">Ladeaufträge für diese Tour:<br></div>');
+					$('#Tour2PageContent').append('<div data-role="controlgroup" id="Tour2Produkte"></div>');
+					$('#Tour2PageContent').append('<div id="LieferauftraegeTour2">Lieferaufträge für diese Tour:<br></div>');
+					$('#Tour2PageContent').append('<div id="Tour2Kunden"></div>');
+				}
+				
+				for(var y=0; y<JSONArrayLoadOrder.length; y++) // Schleife über den Array mit den Ladungsaufträgen
+				{
+					var innerJSONObjectLoadOrder = JSONArrayLoadOrder[y];
+					if(innerJSONObjectDepot[text] == tankLagerNameTour2 && innerJSONObjectLoadOrder[tripKey] === "4776" && (!tour2Content || tour2Content == ""))
+						// Wenn der Ladeaufrag aus dem Array dem Tanklagernamen entspricht, bei dem der Fahrer das Fahrzeug beladen soll, wird der Inhalt für die Tour generiert
+					{
+						// dazu werden Buttons erzeugt, die die jeweilige Tour starten sollen; beim Klick erfolgt der Aufruf der Methode "adjustErfassungPage(this, tourID)", 
+						// die die Maskenseite für die Eingabe der Produktinformation des Ladeprodukts generiert
+						// Als Id für die Buttons dient die jeweilige Art des Produkts (Bsp.: "Diesel mit Additiv, 6500 Liter")
+						var produktTypButton = ('<a href="#ProduktErfassungPage" data-role="button" id="'+innerJSONObjectLoadOrder[text]+'" onclick="adjustErfassungPage(this, '+tourID+')" data-icon="forward" data-iconpos="right">'+innerJSONObjectLoadOrder[text]+'</a>');
+						$('#Tour2Produkte').append(produktTypButton).trigger('create');
+					}
+				}
+	
+				for(var z=0; z<JSONArrayDelivery.length; z++)
+				{
+					var innerJSONObjectDelivery = JSONArrayDelivery[z];
+					if(innerJSONObjectDelivery[tripKey] === "4776" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == ""))
+					{
+						var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
+						$('#Tour2Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
+					}
 				}
 			}
-
-			for(var z=0; z<JSONArrayDelivery.length; z++)
-			{
-				var innerJSONObjectDelivery = JSONArrayDelivery[z];
-				if(innerJSONObjectDelivery[tripKey] === "4776" && innerJSONObjectDelivery[deliveryKey] == "0" && innerJSONObjectDepot[text] == tankLagerNameTour2 && (!tour2Content || tour2Content == ""))
-				{
-					var buttonLinkToLieferAuftraegen = ('<a href="#KundenLieferAuftraege" data-role="button" id="'+innerJSONObjectDelivery[text]+'" onclick="adjustKundenLieferAuftraege(this, '+tourID+')" data-theme="e" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectDelivery[text]+'</a>');
-					$('#Tour2Kunden').append(buttonLinkToLieferAuftraegen).trigger('create');
-				}
-			}
+			localStorage.setItem("Tour2 gestartet", "true");
+		}
+		
+		else
+		{
+			alert("Sie können mehrere Touren nicht starten!");
+			$.mobile.changePage("#Touren");
 		}
 	}
 } // end function
@@ -407,8 +438,8 @@ function adjustErfassungPage(wert, tourID)
 		{
 			// falls noch keine Buttons generiert wurden, passiert es in den nächsten Zeilen
 			// dem Button wird die Methode "erfasseProdukt(produktTyp, tourID)" zugewiesen 
-			var cancelErfassungButton = ('<li><a href="#Tour1Page" id="CancelErfassung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyErfassungButton = ('<li><a href="#Tour1Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelErfassungButton = ('<li><a href="#Tour1Page" id="CancelErfassung" data-role="button" data-icon="delete">Abbruch</a></li>');
+			var applyErfassungButton = ('<li><a href="#Tour1Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelErfassungButton).trigger('create');
 			$('#ProduktErfassungPageFooter').append(applyErfassungButton).trigger('create');
 		}
@@ -453,8 +484,8 @@ function adjustErfassungPage(wert, tourID)
 		if(document.getElementById('CancelErfassung') == null && document.getElementById('ApplyErfassung') == null) // Zum Schluss werden die Buttons für "Abbruch" und "Bestätigung" der Eingabe
 			// der erfassten Daten generiert
 		{	
-			var cancelErfassungButton = ('<li><a href="#Tour2Page" id="CancelErfassung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyErfassungButton = ('<li><a href="#Tour2Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelErfassungButton = ('<li><a href="#Tour2Page" id="CancelErfassung" data-role="button" data-icon="delete">Abbruch</a></li>');
+			var applyErfassungButton = ('<li><a href="#Tour2Page" id="ApplyErfassung" data-role="button" onclick="erfasseProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check">Bestätigung</a></li>');
 			$('#ProduktErfassungPageFooter').append(cancelErfassungButton).trigger('create');
 			$('#ProduktErfassungPageFooter').append(applyErfassungButton).trigger('create');
 		}
@@ -543,7 +574,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					{
 						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
 						{
-							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectShipment[text]+'</a>');
 							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
 						}
 					}
@@ -603,7 +634,7 @@ function adjustKundenLieferAuftraege(wert, tourID)
 					{
 						if(keyLongArray[z] == innerJSONObjectShipment[deliveryKey] && innerJSONObjectShipment[keyLong] == innerJSONObjectShipment[shipmentKey] && (!kundenLieferAuftraegePageContent || kundenLieferAuftraegePageContent == ""))
 						{
-							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right" data-theme="e">'+innerJSONObjectShipment[text]+'</a>');
+							var lieferungAbladeButton = ('<a href="#ProduktAbladePage" data-role="button" id="'+innerJSONObjectShipment[text]+'" class="lieferungAbladeButton" onclick="adjustProduktAbladePage(this, '+tourID+')" data-icon="arrow-r" data-iconpos="right">'+innerJSONObjectShipment[text]+'</a>');
 							$('#KundenLieferAuftraegePageContent').append(lieferungAbladeButton).trigger('create');
 						}
 					}
@@ -629,6 +660,9 @@ function adjustProduktAbladePage(wert, tourID)
 	var produktTyp;
 	wertString = wert.id; // Zum Beispiel "ES 98  140, 15809Liter"
 	wertStringCut = wertString.slice(0, wertString.indexOf(',')); // Zum Beispiel ES 98  140
+	
+	var preselection = "Preselection";
+	var preselectionInt;
 	
 	var JSONArrayShipment = holeArray('Minova_DispoClient_Data_ShipmentBean_array');
 	
@@ -659,6 +693,7 @@ function adjustProduktAbladePage(wert, tourID)
 						$("label[for='Vorpeilung']").text(innerJSONObjShipment[text]);
 						$("label[for='Vorpeilung']").css('display', 'inline-block');
 						$("#Vorpeilung").css('display', 'inline-block');
+						preselectionInt = parseInt(innerJSONObjShipment[preselection]);
 					}
 					
 					else if(innerJSONObjShipmentTextColumnString.indexOf('NP') != -1)
@@ -684,8 +719,8 @@ function adjustProduktAbladePage(wert, tourID)
 		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
 		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
 		{
-			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete">Abbruch</a></li>');
+			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check">Bestätigung</a></li>');
 			$('#ProduktAbladungPageFooter').append(cancelVerladungButton).trigger('create');
 			$('#ProduktAbladungPageFooter').append(applyVerladungButton).trigger('create');
 		}
@@ -712,6 +747,13 @@ function adjustProduktAbladePage(wert, tourID)
 			var vorpeilung = $('#Vorpeilung').val();
 			var vorpeilungInt = parseInt(vorpeilung);
 			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+			var gesamtAngabe = $('#GESAMTAngabe').val();
+			var gesamtAngabeInt = parseInt(gesamtAngabe);
+			if(gesamtAngabeInt > preselectionInt)
+			{
+				alert("Die eingegebene Menge für einen Tank überschreitet das Tankvolumen. Bitte geben Sie die Daten erneut ein!");
+				resetProductVerladungData();
+			}
 		});
 	}
 	
@@ -737,6 +779,7 @@ function adjustProduktAbladePage(wert, tourID)
 						$("label[for='Vorpeilung']").text(innerJSONObjShipment[text]);
 						$("label[for='Vorpeilung']").css('display', 'inline-block');
 						$("#Vorpeilung").css('display', 'inline-block');
+						preselectionInt = parseInt(innerJSONObjShipment[preselection]);
 					}
 					
 					if(innerJSONObjShipmentTextColumnString.indexOf('NP') != -1)
@@ -762,8 +805,8 @@ function adjustProduktAbladePage(wert, tourID)
 		document.getElementById('ProduktTypAbladung').innerHTML = produktTyp;
 		if(document.getElementById('CancelVerladung') == null && document.getElementById('ApplyVerladung') == null)
 		{
-			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete" data-theme="e">Abbruch</a></li>');
-			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check" data-theme="e">Bestätigung</a></li>');
+			var cancelVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="CancelVerladung" data-role="button" data-icon="delete">Abbruch</a></li>');
+			var applyVerladungButton = ('<li><a href="#KundenLieferAuftraege" id="ApplyVerladung" data-role="button" onclick="saveVerladenesProdukt('+"'"+produktTyp+"'"+', '+tourID+')" data-icon="check">Bestätigung</a></li>');
 			$('#ProduktAbladungPageFooter').append(cancelVerladungButton).trigger('create');
 			$('#ProduktAbladungPageFooter').append(applyVerladungButton).trigger('create');
 		}
@@ -790,6 +833,13 @@ function adjustProduktAbladePage(wert, tourID)
 			var vorpeilung = $('#Vorpeilung').val();
 			var vorpeilungInt = parseInt(vorpeilung);
 			$('#GESAMTAngabe').val(abgabeMengeInt + vorpeilungInt);
+			var gesamtAngabe = $('#GESAMTAngabe').val();
+			var gesamtAngabeInt = parseInt(gesamtAngabe);
+			if(gesamtAngabeInt > preselectionInt)
+			{
+				alert("Die eingegebene Menge für einen Tank überschreitet das Tankvolumen. Bitte geben Sie die Daten erneut ein!");
+				resetProductVerladungData();
+			}
 		});
 	}
 }
@@ -979,10 +1029,133 @@ function resetProductVerladungData()
 	$('#PumpenstandVolume').val('');
 }
 
+function changeToNightMode()
+{
+	/*var newTheme = "a";
+	var rmbtnClasses = '';
+    var rmhfClasses = '';
+    var rmbdClassess = '';
+    var arr = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"  ];
+    $.each(arr,function(index, value){
+        rmbtnClasses = rmbtnClasses + " ui-btn-up-"+value + " ui-btn-hover-"+value;
+        rmhfClasses = rmhfClasses + " ui-bar-"+value;
+        rmbdClassess = rmbdClassess + " ui-body-"+value;
+    });
+    // reset all the buttons widgets
+    $.mobile.activePage.find('.ui-btn').not('.ui-li-divider').removeClass(rmbtnClasses).addClass('ui-btn-up-' + newTheme).attr('data-theme', newTheme);
+    // reset the header/footer widgets
+    $.mobile.activePage.find('.ui-header, .ui-footer').removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme', newTheme);
+    // reset the page widget
+    $.mobile.activePage.removeClass(rmbdClassess).addClass('ui-body-' + newTheme).attr('data-theme', newTheme);
+    // target the list divider elements, then iterate through them and
+    // change its theme (this is the jQuery Mobile default for
+    // list-dividers)
+    $.mobile.activePage.find('.ui-li-divider').each(function(index, obj) {
+        $(this).removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme',newTheme);
+    });
+    
+ // change default theme
+    // Page
+    $.mobile.page.prototype.options.headerTheme = newTheme;  // Page header only
+    $.mobile.page.prototype.options.contentTheme    = newTheme;
+    $.mobile.page.prototype.options.footerTheme = newTheme;
+    $.mobile.page.prototype.options.theme = newTheme;
+    
+ // Button
+    $.mobile.button.prototype.options.theme = newTheme;
+
+    // Listviews
+    $.mobile.listview.prototype.options.headerTheme = newTheme;  // Header for nested lists
+    $.mobile.listview.prototype.options.theme           = newTheme;  // List items / content
+    $.mobile.listview.prototype.options.dividerTheme    = newTheme;  // List divider
+
+    $.mobile.listview.prototype.options.splitTheme   = newTheme;
+    $.mobile.listview.prototype.options.countTheme   = newTheme;
+    $.mobile.listview.prototype.options.filterTheme = newTheme;*/
+	
+	$.mobile.changeGlobalTheme("a");
+    
+    $.mobile.changePage('#grundZustandSeitenId');
+}
+
+function changeToDayMode()
+{
+	/*var newTheme = "e";
+	var rmbtnClasses = '';
+    var rmhfClasses = '';
+    var rmbdClassess = '';
+    var arr = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"  ];
+    $.each(arr,function(index, value){
+        rmbtnClasses = rmbtnClasses + " ui-btn-up-"+value + " ui-btn-hover-"+value;
+        rmhfClasses = rmhfClasses + " ui-bar-"+value;
+        rmbdClassess = rmbdClassess + " ui-body-"+value;
+    });
+    // reset all the buttons widgets
+    $.mobile.activePage.find('.ui-btn').not('.ui-li-divider').removeClass(rmbtnClasses).addClass('ui-btn-up-' + newTheme).attr('data-theme', newTheme);
+    // reset the header/footer widgets
+    $.mobile.activePage.find('.ui-header, .ui-footer').removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme', newTheme);
+    // reset the page widget
+    $.mobile.activePage.removeClass(rmbdClassess).addClass('ui-body-' + newTheme).attr('data-theme', newTheme);
+    // target the list divider elements, then iterate through them and
+    // change its theme (this is the jQuery Mobile default for
+    // list-dividers)
+    $.mobile.activePage.find('.ui-li-divider').each(function(index, obj) {
+        $(this).removeClass(rmhfClasses).addClass('ui-bar-' + newTheme).attr('data-theme',newTheme);
+    });
+    
+ // change default theme
+    // Page
+    $.mobile.page.prototype.options.headerTheme = newTheme;  // Page header only
+    $.mobile.page.prototype.options.contentTheme    = newTheme;
+    $.mobile.page.prototype.options.footerTheme = newTheme;
+    $.mobile.page.prototype.options.theme = newTheme;
+    
+    // Button
+    $.mobile.button.prototype.options.theme = newTheme;
+
+    // Listviews
+    $.mobile.listview.prototype.options.headerTheme = newTheme;  // Header for nested lists
+    $.mobile.listview.prototype.options.theme           = newTheme;  // List items / content
+    $.mobile.listview.prototype.options.dividerTheme    = newTheme;  // List divider
+
+    $.mobile.listview.prototype.options.splitTheme   = newTheme;
+    $.mobile.listview.prototype.options.countTheme   = newTheme;
+    $.mobile.listview.prototype.options.filterTheme = newTheme;*/
+	
+	$.mobile.changeGlobalTheme("e");
+    
+    $.mobile.changePage('#grundZustandSeitenId');
+}
+
+$.mobile.changeGlobalTheme = function(theme)
+{
+    // These themes will be cleared, add more
+    // swatch letters as needed.
+    var themes = " a b c d e";
+
+    // Updates the theme for all elements that match the
+    // CSS selector with the specified theme class.
+    function setTheme(cssSelector, themeClass, theme)
+    {
+        $(cssSelector)
+            .removeClass(themes.split(" ").join(" " + themeClass + "-"))
+            .addClass(themeClass + "-" + theme)
+            .attr("data-theme", theme);
+    }
+
+    // Add more selectors/theme classes as needed.
+    setTheme(".ui-mobile-viewport", "ui-overlay", theme);
+    setTheme("[data-role='page']", "ui-body", theme);
+    setTheme("[data-role='header']", "ui-bar", theme);
+    setTheme("[data-role='listview'] > li", "ui-bar", theme);
+    setTheme(".ui-btn", "ui-btn-up", theme);
+    setTheme(".ui-btn", "ui-btn-hover", theme);
+};
+
 $(document).bind('pagechange', function()  // Bei jeder Änderung der Seite wird zuerst
 {
-	updateIndicator(); // der Header aktualisiert
-	updateStartScreen(); // der Startbildschrim mit den Daten aus Local Storage befüllt (Bsp.: Version des Software oder Anzahl offener Touren
+//	updateIndicator(); // der Header aktualisiert
+//	updateStartScreen(); // der Startbildschrim mit den Daten aus Local Storage befüllt (Bsp.: Version des Software oder Anzahl offener Touren
 	updateAnmeldeBildschirm(); // und zum Schluss der Bildschirm für die Fahreranmeldung mit dem zuletzt verwendeten Fahrzeug vorbelegt und 
 							  // mit dem Namen des Fahrers, der als letzter das Gerät genutzt hat
 });

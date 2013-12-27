@@ -25,18 +25,20 @@
     <body id="documentBody" class="documentBody" onload="fillLocalStorage()">
         <div data-role="page" id="grundZustandSeitenId">
         
-            <div data-role="header" data-position="fixed" id="grundZustandHeader" data-theme="a">
+            <div data-role="header" data-position="fixed" id="grundZustandHeader">
                 Willkommen
             </div>
             
             <div data-role="content" id="grundZustandInhalt">
-                <a href="#startscreen" data-role="button" id="startButton" class="startAppButton" onclick="updateStartScreen()" data-theme="e" data-icon="arrow-r" data-iconpos="right">Start the app</a>
+                <a href="#startscreen" data-role="button" id="startButton" class="startAppButton" onclick="updateStartScreenAndServicePage()" data-icon="arrow-r" data-iconpos="right">Start the app</a>
             </div>
             
-            <div data-role="footer" id="grundZustandFooter" data-position="fixed" data-theme="c">
+            <div data-role="footer" id="grundZustandFooter" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Kontakt" id="linkToHelpPage" data-rel="dialog" data-role="button" data-icon="alert" data-theme="e">Kontakt</a></li>
+                        <li><a href="#Kontakt" id="linkToHelpPage" data-rel="dialog" data-role="button" data-icon="alert">Kontakt</a></li>
+                        <li><a id="nightSkin" data-role="button" onclick="changeToNightMode()" data-icon="alert">Nacht</a></li>
+    					<li><a id="daySkin" data-role="button" onclick="changeToDayMode()" data-icon="alert">Tag</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,7 +48,7 @@
         <div data-role="page" id="startscreen">
         
 
-            <div data-role="header" data-theme="b">
+            <div data-role="header">
                 DISPO   [ R:<span id="indicator">?</span>, G:<span id="GPSIndicator">?</span> ]
             </div>
 
@@ -58,9 +60,9 @@
 					<div class="ui-block-a">Funk</div>				
 					<div class="ui-block-b"><b><span id="indicatorFunk">unknown</span></b></div>				
 					<div class="ui-block-a">Offene Touren</div>				
-					<div class="ui-block-b"><b><span id="anzahlTouren">(wird aus der DB ausgelesen)</span></b></div>				
+					<div class="ui-block-b"><b><span id="anzahlTouren">wird aus der DB ausgelesen</span></b></div>				
 					<div class="ui-block-a">Version</div>				
-					<div class="ui-block-b"><b><span id="nightlyVersion">(kommt aus local storage)</span></b></div>				
+					<div class="ui-block-b"><b><span id="nightlyVersion">kommt aus local storage</span></b></div>				
 					<div class="ui-block-a">Datum</div>				
 					<div class="ui-block-b"><b><span id="currentDate"><script type="text/javascript">
 									                            var today = new Date();
@@ -75,12 +77,13 @@
 				
             </div>
 
-            <div data-role="footer" data-position="fixed" data-theme="c">
+            <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#grundZustandSeitenId" data-role="button" data-icon="delete" data-theme="e">Beenden</a></li>
-                        <li><a href="#meldungenPage" data-role="button" data-icon="info" data-theme="e" data-rel="dialog" data-transition="pop">Meldungen</a></li>
-                        <li><a href="#anmeldeBildschirm" data-role="button" onclick="updateAnmeldeBildschirm()" data-icon="arrow-r" data-theme="e">Anmeldung</a></li>
+                        <li><a href="#grundZustandSeitenId" data-role="button" data-icon="delete">Beenden</a></li>
+                        <li><a href="#meldungenPage" data-role="button" data-icon="info" data-rel="dialog" data-transition="pop">Meldungen</a></li>
+                        <li><a href="#ServicePage" data-role="button" onclick="updateStartScreenAndServicePage()" data-icon="gear">Service</a></li>
+                        <li><a href="#anmeldeBildschirm" data-role="button" onclick="updateAnmeldeBildschirm()" data-icon="arrow-r">Anmeldung</a></li>
                     </ul>
                 </div>
             </div>
@@ -88,33 +91,76 @@
         
         <div data-role="page" id="Kontakt">
         
-            <div data-role="header" data-theme="e">
+            <div data-role="header">
                 <div class="dialogHeader"><span>Kontakt</span></div>
             </div>
             
             <div data-role="content">
                 <div class="KontaktContentText">Für alle Fragen stehen wir Ihnen unter der folgenden Nummer gerne zu Verfügung:</div>
                 <div id="callNumber">+49 931/32235-0</div>
-                <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back" data-theme="e">Zur Hauptseite</a>
+                <a href="#grundZustandSeitenId" rel="external" data-role="button" data-icon="back">Zur Hauptseite</a>
             </div>
         </div>
         
         <div data-role="page" id="meldungenPage">
         
-	        <div data-role="header"  data-theme="e">
+	        <div data-role="header">
 	            <div class="dialogHeader"><span>Meldungen</span></div>
 	        </div>
 	        
 	        <div data-role="content">
-	            <div class="meldungenPageContentText">Hier erscheinen später die Anmerkungen zu der jeweiligen Tour<br>(momentan im Offline-Modus nicht möglich)</div>
-	            <a href="#startscreen" data-role="button" data-icon="back" data-theme="e">Zur DISPO Truck Star</a>
+	            <div class="meldungenPageContentText">Hier werden Nachrichten aus dem Büro für Sie angezeigt<br>(momentan im Offline-Modus nicht möglich)</div>
+	            <a href="#startscreen" data-role="button" data-icon="back">Zur DISPO Truck Star</a>
 	        </div>
+	        
     	</div>
+    	
+    	<div data-role="page" id="ServicePage">
+    		
+    		<div data-role="header">
+    			Service
+    		</div>
+    		
+    		<div data-role="content">
+    		
+    			<div class="ui-grid-a">
+					<div class="ui-block-a">Fahrzeugnummer</div>				
+					<div class="ui-block-b"><b><span id="vehicleNumberServicePage">wird aus der DB ausgelesen</span></b></div>				
+					<div class="ui-block-a">Funk</div>				
+					<div class="ui-block-b"><b><span id="indicatorFunkServicePage">unknown</span></b></div>				
+					<div class="ui-block-a">Offene Touren</div>				
+					<div class="ui-block-b"><b><span id="anzahlTourenServicePage">wird aus der DB ausgelesen</span></b></div>				
+					<div class="ui-block-a">Version</div>				
+					<div class="ui-block-b"><b><span id="nightlyVersionServicePage">kommt aus local storage</span></b></div>				
+					<div class="ui-block-a">Datum</div>				
+					<div class="ui-block-b"><b><span id="currentDateServicePage"><script type="text/javascript">
+									                            var today = new Date();
+									                            var dd = today.getDate();
+									                            var mm = today.getMonth()+1; //January is 0!
+									
+									                            var yyyy = today.getFullYear();
+									                            if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = dd+'-'+mm+'-'+yyyy;
+									                            document.write(today.toString());
+				               	</script></span></b></div>				
+				</div>
+				
+    		</div>
+    		
+    		<div data-role="footer" data-position="fixed">
+    			<div data-role="navbar">
+    				<ul>
+    					<li><a href="#startscreen" data-role="button" data-icon="back">Zurück</a></li>
+    					<li><a href="#" data-role="button" data-icon="forward">Navigieren</a></li>
+    				</ul>
+                </div>
+            </div>
+            
+        </div>
     	
        	<div data-role="page" id="anmeldeBildschirm">
 
-            <div data-role="header" data-theme="b" data-position="fixed">
-                DISPO   [ R:<span id="indicator">?</span>, G:<span id="GPSIndicator">?</span> ]
+            <div data-role="header" data-position="fixed">
+                DISPO   [ R:<span id="indicatorAnmeldeBildschirm">?</span>, G:<span id="GPSIndicatorAnmeldeBildschirm">?</span> ]
             </div>
 
             <div data-role="content" id="anmeldeBildschrimInhalt">
@@ -134,12 +180,12 @@
                     <select name="AufliegerAuswahl" id="AufliegerAuswahl"></select> <!-- Die Auswahl wird hier mit JavaScript dynamisch hinzugefügt -->
                 </div>
 
-	            <div data-role="footer" id="anmeldeBildschirmFooter" data-position="fixed" data-theme="e" data-tap-toggle="false">
+	            <div data-role="footer" id="anmeldeBildschirmFooter" data-position="fixed" data-tap-toggle="false">
 	                <div data-role="navbar">
 	                    <ul>
-	                        <li><a href="#startscreen" data-role="button" data-icon="back" data-theme="e" >Zum Start</a></li>
-	                        <li><a href="#changePass"  data-role="button" onclick="prepareChangePassDialog()" data-rel="dialog" data-icon="refresh" data-theme="e">PIN ändern</a></li>
-	                        <li><a data-role="button" id="zuDenTourenButton" onclick="setCurrentDriverDataAndMoveToTouren()" data-icon="arrow-r" data-theme="e">Touren</a></li>
+	                        <li><a href="#startscreen" data-role="button" onclick="updateStartScreenAndServicePage()" data-icon="back">Zum Start</a></li>
+	                        <li><a href="#changePass"  data-role="button" onclick="prepareChangePassDialog()" data-rel="dialog" data-icon="refresh">PIN ändern</a></li>
+	                        <li><a data-role="button" id="zuDenTourenButton" onclick="setCurrentDriverDataAndMoveToTouren()" data-icon="arrow-r">Touren</a></li>
 	                    </ul>
 	                </div>
 	            </div>
@@ -149,7 +195,7 @@
             
 		<div data-role="page" id="changePass">
 
-            <div data-role="header" data-theme="e">
+            <div data-role="header">
                 <div class="dialogHeader"><span>PIN ändern</span></div>
             </div>
 
@@ -170,31 +216,30 @@
                     <input type="password" name="confirmNewPassword" id="confirmNewPassword" value=""  />
                 </div>
 
-                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-theme="c" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="top">Abbrechen</a>
-                <div data-role="button" id="changePassword" onclick="changePassword()" data-inline="true" data-mini="true"
-                                data-theme="e" data-icon="check" data-iconpos="top">Bestätigen</div>
+                <a href="#anmeldeBildschirm" data-role="button" id="cancelChangePass" data-inline="true" data-mini="true" data-icon="delete" data-iconpos="top">Abbrechen</a>
+                <div data-role="button" id="changePassword" onclick="changePassword()" data-inline="true" data-mini="true" data-icon="check" data-iconpos="top">Bestätigen</div>
             </div>
 
 		</div>
 		
 		<div data-role="page" id="Touren">
 		
-			<div data-role="header" data-position="fixed" id="TourenHeader" data-theme="b">
+			<div data-role="header" data-position="fixed" id="TourenHeader">
 				Touren für heute
 			</div>
 			
 			<div data-role="content" id="TourenPageContent">
 				<div data-role="controlgroup" id="TourenPageContentControlgroup">
-					<a href="#Tour1Page" id="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4771 - Donnerstag</a>
-					<a href="#Tour2Page" id="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right" data-theme="e">Do 4776 - Donnerstag</a>
+					<a href="#Tour1Page" id="Tour1Link" data-role="button" onclick="setTourContent(1)" data-icon="arrow-r" data-iconpos="right">Do 4771 - Donnerstag</a>
+					<a href="#Tour2Page" id="Tour2Link" data-role="button" onclick="setTourContent(2)" data-icon="arrow-r" data-iconpos="right">Do 4776 - Donnerstag</a>
 				</div>
 			</div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#anmeldeBildschirm" data-role="button" data-icon="back" data-theme="e" >Zur Anmeldung</a></li>
-                        <li><a href="#notiz" data-role="button" data-rel="dialog" data-icon="alert" data-theme="e">Notiz</a></li>
+                        <li><a href="#anmeldeBildschirm" data-role="button" data-icon="back">Zur Anmeldung</a></li>
+                        <li><a href="#notiz" data-role="button" data-rel="dialog" data-icon="alert">Notiz</a></li>
                     </ul>
                 </div>
             </div>
@@ -203,14 +248,14 @@
 		
 		<div data-role="page" id="notiz">
 			
-			<div data-role="header" data-theme="e">
+			<div data-role="header">
                 <div class="dialogHeader"><span>Notizen</span></div>
             </div>
 			
 			<div data-role="content">
 			
-				<div class="notizContentText">Hier können Sie wichtige Zusatzinformationen zu der Tour einlesen</div>
-				<a href="#Touren" data-role="button" data-theme="e" data-icon="delete" >Zu den Touren</a>
+				<div class="notizContentText">Hier erscheinen später die Anmerkungen zu der jeweiligen Tour</div>
+				<a href="#Touren" data-role="button" data-icon="delete" >Zu den Touren</a>
 				
 			</div>
 			
@@ -218,16 +263,16 @@
 		
 		<div data-role="page" id="Tour1Page">
 		
-			<div data-role="header" data-position="fixed" data-theme="b">
+			<div data-role="header" data-position="fixed">
 				Do 4771 - Donnerstag
 			</div>
 			
 			<div data-role="content" id="Tour1PageContent"></div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back" data-theme="e" >Zurück zu den Touren</a></li>
+                        <li><a href="#Touren" rel="external" data-role="button" data-icon="back">Zurück zu den Touren</a></li>
                     </ul>
                 </div>
             </div>
@@ -236,16 +281,16 @@
 		
 		<div data-role="page" id="Tour2Page">
 		
-			<div data-role="header" data-position="fixed" data-theme="b">
+			<div data-role="header" data-position="fixed">
 				Do 4776 - Donnerstag
 			</div>
 			
 			<div data-role="content" id="Tour2PageContent"></div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Touren" data-role="button" data-icon="back" data-iconpos="left" data-theme="e">Zurück zu den Touren</a></li>
+                        <li><a href="#Touren" data-role="button" data-icon="back" data-iconpos="left">Zurück zu den Touren</a></li>
                     </ul>
                 </div>
             </div>
@@ -254,7 +299,7 @@
 		
 		<div data-role="page" id="ProduktErfassungPage">
 		
-			<div data-role="header" data-position="fixed" data-theme="b">
+			<div data-role="header" data-position="fixed">
 				Produkterfassung
 			</div>
 			
@@ -299,7 +344,7 @@
 	            
 			</div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar">
 					<ul id="ProduktErfassungPageFooter">
 					</ul>
@@ -310,7 +355,7 @@
 			
 		<div data-role="page" id="KundenLieferAuftraege">
 		
-			<div data-role="header" data-position="fixed" data-theme="b">
+			<div data-role="header" data-position="fixed">
 				Lieferstelle
 			</div>
 			
@@ -318,10 +363,10 @@
 				<div data-role="controlgroup" id="KundenLieferAuftraegePageContent"></div>
 			</div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar">
 					<ul id="KundenLieferAuftraegePageFooter">
-						<li><a data-role="button" id="KundenLieferAuftraegePageFooterButton" data-icon="back" data-iconpos="left" data-theme="e">Zurück</a></li>
+						<li><a data-role="button" id="KundenLieferAuftraegePageFooterButton" data-icon="back" data-iconpos="left">Zurück</a></li>
 					</ul>
 				</div>
 			</div>
@@ -332,7 +377,7 @@
 		
 		<div data-role="page" id="ProduktAbladePage">
 		
-			<div data-role="header" data-position="fixed" data-theme="b">
+			<div data-role="header" data-position="fixed">
 				Produktabgabe
 			</div>
 			
@@ -372,7 +417,7 @@
 				
 			</div>
 			
-			<div data-role="footer" data-position="fixed" data-theme="e">
+			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar">
 					<ul id="ProduktAbladungPageFooter">
 					</ul>
